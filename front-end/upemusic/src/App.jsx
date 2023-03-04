@@ -1,3 +1,4 @@
+import { AuthProvider } from "./context/auth";
 import { AppRouter } from "./routes";
 import "./styles.css";
 
@@ -5,7 +6,9 @@ export const App = () => {
   
 
   return (
-    <AppRouter/>
+    <AuthProvider>
+        <AppRouter/>
+    </AuthProvider>
     
   );
 }
