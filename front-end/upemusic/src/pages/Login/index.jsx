@@ -3,12 +3,28 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import UpeMusic from "../../assets/upeMusic.png"
 import { LayoutComponent } from "../../components/LayoutComponents";
+import api from "../../services/api";
 
 
 export const Login = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  function handleSignIn (){
+    if(email !== '' && password !== ''){
+      api.post("/authenticate",{
+        email:email,
+        password:password,
+        
+      })
+    }
+    else{
+      alert('Preencha todos os campos')
+    }
+  }
+
+
   return (
     <LayoutComponent>
 
@@ -40,7 +56,7 @@ export const Login = () => {
         </div>
 
         <div className="container-login-form-btn">
-          <button className="login-form-btn">Login</button>
+          <button className="login-form-btn" onClick={handleSignIn}>Login</button>
         </div>
 
         <div className="text-center">
