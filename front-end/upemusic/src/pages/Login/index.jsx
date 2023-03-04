@@ -13,7 +13,7 @@ export const Login = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [signIn,signed] = useContext(AuthContext);
+  const {signIn,signed} = useContext(AuthContext);
 
   const handleSignIn = async(e) =>{
     e.preventDefault()
