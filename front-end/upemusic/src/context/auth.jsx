@@ -1,6 +1,6 @@
 import { createContext, useEffect } from "react";
 import { useState } from "react";
-import api from "../../services/api";
+import api from "../services/api"
 
 
 export const AuthContext = createContext()
@@ -32,12 +32,12 @@ export const AuthProvider = ({children}) =>{
         if(response.data.error){
             alert(response.data.error)
         } else{
-            setUser(response.data)
+            setUser(response.data.user)
             api.defaults.headers.common[
                 "Authorization"
             ] =  `Bearer ${response.data.token}`
             localStorage.setItem("@Auth:token", response.data.token)
-            localStorage.setItem("@Auth:user", response.data.user)
+            localStorage.setItem("@Auth:user", JSON.stringify(response.data.user))
 
         }
     }

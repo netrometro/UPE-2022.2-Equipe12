@@ -11,7 +11,8 @@ export const Register = () => {
   const [password2, setPassword2] = useState("");
   const [name, setName] = useState("");
 
-  function handleSignUpClick(){
+  const handleSignUpClick = async (e) =>{
+    e.preventDefault();
     if(password === password2){
         if(name !== '' && email !== '' && password!== '' && password2 !== ''){
             api.post("/register", {
