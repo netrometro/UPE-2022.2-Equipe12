@@ -1,6 +1,8 @@
 import { createContext, useEffect } from "react";
 import { useState } from "react";
 import api from "../services/api"
+import { Navigate } from "react-router-dom"
+
 
 
 export const AuthContext = createContext()
@@ -42,11 +44,18 @@ export const AuthProvider = ({children}) =>{
         }
     }
 
+    const signOut = () => {
+        localStorage.clear();
+        setUser(null)
+        return <Navigate to="/"/>
+    }
+
     return (
         <AuthContext.Provider value={{
             user,
             signed:!!user,
-            signIn
+            signIn,
+            signOut
         }}>
             {children}
         </AuthContext.Provider>
