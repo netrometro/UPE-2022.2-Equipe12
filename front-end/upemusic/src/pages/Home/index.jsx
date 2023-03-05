@@ -1,6 +1,11 @@
 import { LayoutComponent } from "../../components/LayoutComponents";
+import { useContext } from "react";
+import { AuthContext } from "../../context/auth";
+
 
 export const Home = () => {
+
+  const { signOut } = useContext(AuthContext);
   return (
     <LayoutComponent>
       <div className="home-container">
@@ -14,6 +19,9 @@ export const Home = () => {
             Aplicativo para criar playlists.
           </p>
         </div>
+        <div className="container-login-form-btn">
+            <button onClick={signOut} type="submit" className="login-form-btn">Deslogar</button>
+          </div>
       </div>
     </LayoutComponent>
   );
