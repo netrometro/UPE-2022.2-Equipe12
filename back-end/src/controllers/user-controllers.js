@@ -25,3 +25,16 @@ export const getUsers = async(req,res) =>{
     return res.json({users})
 }
 
+export const getUser = async(req,res) => {
+    const {username} = req.body;
+    const user = await prisma.user.findUnique({where:{username}})
+
+    if(!user){
+        return res.json('User not found')
+    }
+
+    const {id} = user;
+    return res.json({user:{id,username}})
+    
+}
+
