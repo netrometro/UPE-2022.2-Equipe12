@@ -11,12 +11,23 @@ datasource db {
 }
 
 model User {
-  id         String   @id @default(uuid())
-  email      String   @unique
-  name       String
+  id         String    @id @default(uuid())
+  email      String    @unique
+  username   String    @unique
   password   String
-  created_at DateTime @default(now())
-  update_at  DateTime @updatedAt
+  created_at DateTime  @default(now())
+  update_at  DateTime  @updatedAt
+  followers  Follows[] @relation("following")
+  following  Follows[] @relation("follower")
 
   @@map("users")
+}
+
+model Follows {
+  follower    User   @relation("follower", fields: [followerId], references: [id])
+  followerId  String
+  following   User   @relation("following", fields: [followingId], references: [id])
+  followingId String
+
+  @@id([followerId, followingId])
 }
