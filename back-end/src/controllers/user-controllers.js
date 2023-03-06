@@ -38,3 +38,15 @@ export const getUser = async(req,res) => {
     
 }
 
+export const followUser = async(req,res) =>{
+    const {followerId,followingId} = req.body;
+    const follow = await prisma.follows.create({
+        data:{
+            follower:{ connect:{id:followerId}},
+            following:{connect:{id:followingId}}
+        }
+    })
+
+    return res.json(follow)
+
+}
