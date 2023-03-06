@@ -50,3 +50,23 @@ export const followUser = async(req,res) =>{
     return res.json(follow)
 
 }
+
+export const followsUser = async (req, res) => {
+    const { followerId } = req.body;
+    const follows = await prisma.follows.findMany({ where: { followerId } })
+    const seguidores = {
+        followerId,
+        listaSeguidores: []
+    }
+    await Promise.all(follows.map(async (item, index) => {
+        console.log("Item ", index, item)
+        console.log('Item id', item.followingId)
+        const user = await prisma.user.findUnique({ where: { id: item.followingId }, select: { id:true, username: true } })
+            .then(item => {
+                console.log("User", item)
+                seguidores.listaSeguidores.push(item)
+            })
+    }))
+    console.log('Resposta antes de enviar ', seguidores)
+    return res.json(seguidores)
+}
