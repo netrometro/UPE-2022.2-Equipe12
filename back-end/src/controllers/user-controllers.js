@@ -95,3 +95,21 @@ export const followsUser = async (req, res) => {
     }))
     return res.json(seguidores)
 }
+
+//função que permite o usuário ver quem ele segue
+export const followingsUser = async (req, res) => {
+    const { followerIng } = req.body;
+    const follows = await prisma.follows.findMany({ where: { followerIng } })
+    const seguindo = {
+        followerIng,
+        listaSeguindo: []
+    }
+    await Promise.all(follows.map(async (item, index) => {
+        const user = await prisma.user.findUnique({ where: { id: item.followingId }, select: { id:true, username: true } })
+            .then(item => {
+                console.log("User", item)
+                seguindo.listaSeguindo.push(item)
+            })
+    }))
+    return res.json(seguindo)
+}
