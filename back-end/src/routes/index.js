@@ -8,7 +8,7 @@ const userRoutes = app => {
     app.get("/users", authMid,getUsers),
     app.get("/findUser", authMid, getUser),
     app.post("/followUser", followUser),
-    app.post("/followsUser", followsUser),
+    app.get("/followsUser", followsUser),
     app.delete("/unfollowUser",unfollowUser)
 
 }
