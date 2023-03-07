@@ -3,6 +3,7 @@ require("dotenv").config({path:"./.env"})
 import { prisma } from "../lib/prisma"
 
 
+//verificação do token
 module.exports = (req, res, next) =>{
     const authHeader = req.headers.authorization;
 

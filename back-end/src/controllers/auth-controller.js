@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import { prisma } from "../lib/prisma"
 require('dotenv').config()
 
-
+// função de login utilizando webtoken
 export const authenticate = async (req,res) => {
     try{
         const {email,password} = req.body

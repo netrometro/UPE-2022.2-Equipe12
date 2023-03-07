@@ -5,6 +5,7 @@ import {userValidation} from "../validators/user-validation"
 import { createUser } from "../repositorys/user-repositorys";
 
 
+// função para criar usuário
 export const create = async (req, res) => {
     try {
         await userValidation.validate(req.body);
@@ -20,11 +21,13 @@ export const create = async (req, res) => {
     }
 }
 
+//função que puxa todos os usuários
 export const getUsers = async(req,res) =>{
     const users = await prisma.user.findMany();
     return res.json({users})
 }
 
+// função que pesquisa um usuário pelo seu username
 export const getUser = async(req,res) => {
     const {username} = req.body;
     const user = await prisma.user.findUnique({where:{username}})
@@ -38,6 +41,7 @@ export const getUser = async(req,res) => {
     
 }
 
+// função que permite o usuário seguir outro usuário
 export const followUser = async(req,res) =>{
     const {followerId,followingId} = req.body;
     const follow = await prisma.follows.create({
@@ -51,6 +55,7 @@ export const followUser = async(req,res) =>{
 
 }
 
+// função que permite o usuário parar de seguir outro usuário
 export const unfollowUser = async (req, res) => {
     const { followerId, followingId } = req.body;
   
@@ -73,6 +78,7 @@ export const unfollowUser = async (req, res) => {
     return res.json(unfollow);
   };
 
+  // função para ver os seguidores do usuário
 export const followsUser = async (req, res) => {
     const { followerId } = req.body;
     const follows = await prisma.follows.findMany({ where: { followerId } })
