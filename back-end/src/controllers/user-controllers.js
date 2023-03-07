@@ -51,6 +51,28 @@ export const followUser = async(req,res) =>{
 
 }
 
+export const unfollowUser = async (req, res) => {
+    const { followerId, followingId } = req.body;
+  
+    const follow = await prisma.follows.findUnique({
+      where: {
+        followerId_followingId: { followerId, followingId },
+      },
+    });
+  
+    if (!follow) {
+      return res.status(404).json({ message: "Você não segue esse usuário!" });
+    }
+  
+    const unfollow = await prisma.follows.delete({
+      where: {
+        followerId_followingId: { followerId, followingId },
+      },
+    });
+  
+    return res.json(unfollow);
+  };
+
 export const followsUser = async (req, res) => {
     const { followerId } = req.body;
     const follows = await prisma.follows.findMany({ where: { followerId } })
