@@ -6,7 +6,7 @@ const userRoutes = app => {
     app.post("/register", create),
     app.post("/authenticate", authenticate),
     app.get("/users", authMid,getUsers),
-    app.get("/findUser", authMid, getUser),
+    app.get("/findUser", getUser),
     app.post("/followUser",authMid, followUser),
     app.get("/followsUser", authMid, followsUser),
     app.delete("/unfollowUser",authMid, unfollowUser),

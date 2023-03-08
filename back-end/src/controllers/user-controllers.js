@@ -29,12 +29,13 @@ export const getUsers = async(req,res) =>{
 
 // função que pesquisa um usuário pelo seu username
 export const getUser = async(req,res) => {
-    const {username} = req.body;
+    const {username} = req.query;
     const user = await prisma.user.findUnique({where:{username}})
 
     if(!user){
         return res.json('Não existe usuário com esse username')
     }
+    
 
     const {id} = user;
     return res.json({user:{id,username}})
