@@ -4,8 +4,19 @@ import { LayoutComponent } from "../../components/LayoutComponents";
 import api from "../../services/api";
 
 
+const SearchResult = ({ username }) => {
+  return (
+    <div>
+      <p>{username}</p>
+    </div>
+  );
+};
+
+
 export const SearchUser = () => {
   const [username, setUsername] = useState("");
+  const [searchResult, setSearchResult] = useState(null);
+  
 
 
   const handleSubmit = async (event) => {
@@ -13,9 +24,9 @@ export const SearchUser = () => {
     event.preventDefault();
     try {
       const response = await api.get('/findUser', { params: { username } });
-      setUsername(response.data.user.username);
+      setSearchResult(response.data.user.username);
     } catch (error) {
-      console.error(error);
+      alert('Não existe nenhum usuário com esse nome')
     }
   };
 
@@ -36,6 +47,7 @@ export const SearchUser = () => {
         <div className="container-login-form-btn">
           <button type="button" onClick={handleSubmit} className="login-form-btn">Buscar</button>
         </div>
+        {searchResult && <SearchResult username={searchResult} />}
       </form>
     </LayoutComponent>
   );
