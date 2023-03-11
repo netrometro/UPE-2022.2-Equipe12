@@ -1,10 +1,14 @@
 import { LayoutComponent } from "../../components/LayoutComponents";
 import { useContext } from "react";
 import { AuthContext } from "../../context/auth";
+import { useNavigate } from "react-router-dom";
 
 
 export const Home = () => {
-
+  const navigate = useNavigate();
+  const search = () => {
+    navigate("/searchUser");
+  };
   const { signOut } = useContext(AuthContext);
   return (
     <LayoutComponent>
@@ -15,13 +19,11 @@ export const Home = () => {
           </h1>
           <br />
           <br />
-          <p style={{ color: "#f4f4f4" }} className="home-description">
-            Aplicativo para criar playlists.
-          </p>
         </div>
         <div className="container-login-form-btn">
-            <button onClick={signOut} type="submit" className="login-form-btn">Deslogar</button>
-          </div>
+          <button onClick={signOut} type="submit" className="login-form-btn">Deslogar</button>
+          <button type="button" onClick={search} className="login-form-btn">Procurar usuário</button>
+        </div>
       </div>
     </LayoutComponent>
   );
