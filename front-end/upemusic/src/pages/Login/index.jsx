@@ -24,7 +24,11 @@ export const Login = () => {
       //   password: password,
 
       // })
-      await signIn(email, password);
+      try{
+        await signIn(email, password);
+      }catch(error){
+        alert("Credenciais incorretas!",error)
+      }
     }
     else {
       alert('Preencha todos os campos')

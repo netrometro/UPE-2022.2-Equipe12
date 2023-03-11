@@ -1,8 +1,15 @@
 import { Navigate, Outlet } from "react-router-dom"
-import { AuthContext } from "../context/auth"
-import { useContext } from "react";
+
+const useAuth=()=>{
+    const user=localStorage.getItem('@Auth:user')
+    if(user){
+      return true
+    } else {
+      return false
+    }
+  }
 
 export const PrivateRoute = () => {
-    const {signed} = useContext(AuthContext)
-    return signed ? < Outlet /> : <Navigate to="/"/>;
+    const auth = useAuth();
+    return auth ? < Outlet /> : <Navigate to="/"/>;
 }
