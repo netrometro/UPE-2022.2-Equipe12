@@ -4,32 +4,47 @@ import { LayoutComponent } from "../../components/LayoutComponents";
 import api from "../../services/api";
 
 
-const SearchResult = ({ username, userId,currentUserId  }) => {
-  api.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('@Auth:token')}`;
-  const handleFollowUser = async () => {
-    try {
-      const response = await api.post('/followUser', {followerId: currentUserId , followingId:userId})
-      alert('Você está seguindo este usuário');
-    }
-   catch (error) {
-    alert("Você já segue o usuário!", error);
-  }
-}
+const SearchResult = ({ username }) => {
   return (
     <div>
       <p>{username}</p>
-      <button type="button" className="login-form-btn" onClick={handleFollowUser}>Seguir</button>
     </div>
   );
 };
 
 
-export const SearchUser = (currentUserId ) => {
+export const SearchUser = () => {
   const [username, setUsername] = useState("");
   const [searchResult, setSearchResult] = useState(null);
-  const [userId, setUserId] = useState(null); // Adiciona uma nova propriedade de estado para armazenar o ID do usuário
+  const [userId, setUserId] = useState(null);
+  const logadoId = JSON.parse(localStorage.getItem('@Auth:user')).id
 
-  
+  const handleFollow = async (event) => {
+    api.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('@Auth:token')}`;
+    if(logadoId === userId){
+      alert("Você não pode se seguir, carente!")
+    }else{
+      try {
+        if(logadoId === userId){
+        }
+        await api.post('/followUser', { followerId: logadoId, followingId: userId })
+        alert("Você está seguindo esse usuário agora!")
+      } catch (error) {
+        alert("Você já segue esse usuário!", error)
+      }
+    }
+  }
+
+  const handleUnfollow = async (event) => {
+    api.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('@Auth:token')}`;
+    try {
+      await api.delete('/unfollowUser', { data: { followerId: logadoId, followingId: userId } });
+      alert('Você deixou de seguir este usuário com sucesso!');
+    } catch (error) {
+      alert('Erro ao deixar de seguir o usuário:', error);
+    }
+  };
+
   const handleSubmit = async (event) => {
     api.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('@Auth:token')}`;
     event.preventDefault();
@@ -37,6 +52,7 @@ export const SearchUser = (currentUserId ) => {
       const response = await api.get('/findUser', { params: { username } });
       setSearchResult(response.data.user.username);
       setUserId(response.data.user.id); // Define o ID do usuário pesquisado
+
 
     } catch (error) {
       alert('Não existe nenhum usuário com esse nome')
@@ -55,12 +71,15 @@ export const SearchUser = (currentUserId ) => {
             onChange={(event) => setUsername(event.target.value)}
           />
           <span className="focus-input" data-placeholder="Nome do usuário"></span>
-        </div>
+        </div> 
 
         <div className="container-login-form-btn">
+          <button type="button" onClick={handleUnfollow} className="login-form-btn">Parar de seguir</button>
+
           <button type="button" onClick={handleSubmit} className="login-form-btn">Buscar</button>
+          <button type="button" onClick={handleFollow} className="login-form-btn">Seguir</button>
         </div>
-        {searchResult && <SearchResult username={searchResult} userId={userId} />}
+        {searchResult && <SearchResult username={searchResult} />}
       </form>
     </LayoutComponent>
   );
