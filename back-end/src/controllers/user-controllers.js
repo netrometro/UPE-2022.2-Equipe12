@@ -34,9 +34,7 @@ export const getUser = async(req,res) => {
 
     if(!user){
         return res.json('Não existe usuário com esse username')
-    }
-    
-
+    }   
     const {id} = user;
     return res.json({user:{id,username}})
     
@@ -44,18 +42,19 @@ export const getUser = async(req,res) => {
 
 // função que permite o usuário seguir outro usuário
 export const followUser = async(req,res) =>{
-    const {followerId,followingId} = req.body;
+    const {followerId,followingId} = req.body;    
+
     try{
         const follow = await prisma.follows.create({
             data:{
                 follower:{ connect:{id:followerId}},
-                following:{connect:{id:followingId}}
+                following:{ connect:{id:followingId}}
             }
         })
     
         return res.json(follow)
     }catch(e){
-        return res.json({erro:'Você já segue esse usuário'})
+        return res.status(400).send("Você já segue o usuário")
     }
     
 
@@ -63,7 +62,11 @@ export const followUser = async(req,res) =>{
 
 // função que permite o usuário parar de seguir outro usuário
 export const unfollowUser = async (req, res) => {
+    console.log(req.body)
+
     const { followerId, followingId } = req.body;
+    console.log(req.body)
+
   
     const follow = await prisma.follows.findUnique({
       where: {
