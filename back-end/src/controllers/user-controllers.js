@@ -89,14 +89,14 @@ export const unfollowUser = async (req, res) => {
 
   // função para ver os seguidores do usuário
 export const followsUser = async (req, res) => {
-    const { followerId } = req.body;
-    const follows = await prisma.follows.findMany({ where: { followerId } })
+    const { followerId } = req.params;
+    const follows = await prisma.follows.findMany({ where: { followerId }, distinct:['followerId'] })
     const seguidores = {
         followerId,
         listaSeguidores: []
     }
     await Promise.all(follows.map(async (item, index) => {
-        const user = await prisma.user.findUnique({ where: { id: item.followingId }, select: { id:true, username: true } })
+        const user = await prisma.user.findUnique({ where: { id: item.followerId }, select: { id:true, username: true } })
             .then(item => {
                 console.log("User", item)
                 seguidores.listaSeguidores.push(item)
@@ -107,10 +107,10 @@ export const followsUser = async (req, res) => {
 
 //função que permite o usuário ver quem ele segue
 export const followingsUser = async (req, res) => {
-    const { followerIng } = req.body;
-    const follows = await prisma.follows.findMany({ where: { followerIng } })
+    const { followerIngId } = req.params;
+    const follows = await prisma.follows.findMany({ where: { followingId:followerIngId } })
     const seguindo = {
-        followerIng,
+        followerIngId,
         listaSeguindo: []
     }
     await Promise.all(follows.map(async (item, index) => {
