@@ -74,10 +74,10 @@ export const SearchUser = () => {
         </div> 
 
         <div className="container-login-form-btn">
-          <button type="button" onClick={handleUnfollow} className="login-form-btn">Parar de seguir</button>
+          <button type="button" onClick={handleUnfollow} style={{ marginBottom: "10px" }}  className="login-form-btn">Parar de seguir</button>
 
-          <button type="button" onClick={handleSubmit} className="login-form-btn">Buscar</button>
-          <button type="button" onClick={handleFollow} className="login-form-btn">Seguir</button>
+          <button type="button" onClick={handleSubmit}  style={{ marginBottom: "10px" }} className="login-form-btn">Buscar</button>
+          <button type="button" onClick={handleFollow} style={{ marginBottom: "10px" }} className="login-form-btn">Seguir</button>
         </div>
         {searchResult && <SearchResult username={searchResult} />}
       </form>

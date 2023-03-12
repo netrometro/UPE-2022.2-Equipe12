@@ -38,8 +38,8 @@ export const Following = () => {
                     <br />
                 </div>
                 <div className="container-login-form-btn">
-                    <button type="button" onClick={getFollowing} className="login-form-btn">Ver quem eu sigo</button>
-                    <button type="button" onClick={search} className="login-form-btn">Procurar usuários</button>
+                    <button type="button" style={{ marginBottom: "10px" }} onClick={getFollowing} className="login-form-btn">Ver quem eu sigo</button>
+                    <button type="button" style={{ marginBottom: "10px" }}  onClick={search} className="login-form-btn">Procurar usuários</button>
                 </div>
                 <span>
                     {followingUsers.map((user,index) =>(

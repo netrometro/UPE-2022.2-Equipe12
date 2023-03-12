@@ -37,8 +37,8 @@ export const Follower = () => {
                     <br />
                 </div>
                 <div className="container-login-form-btn">
-                    <button type="button" onClick={getFollowers} className="login-form-btn">Buscar seguidores</button>
-                    <button type="button" onClick={search} className="login-form-btn">Procurar usuários</button>
+                    <button type="button" style={{ marginBottom: "10px" }} onClick={getFollowers} className="login-form-btn">Buscar seguidores</button>
+                    <button type="button" style={{ marginBottom: "10px" }} onClick={search} className="login-form-btn">Procurar usuários</button>
                 </div>
                 <span>
                     {followersUsers.map((user,index) =>(

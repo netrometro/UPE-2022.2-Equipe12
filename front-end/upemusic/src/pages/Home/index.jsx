@@ -6,16 +6,23 @@ import { useNavigate } from "react-router-dom";
 
 export const Home = () => {
   const navigate = useNavigate();
-  const search = () => {
+  const { signOut } = useContext(AuthContext);
+
+  function search() {
     navigate("/searchUser");
   };
-  const follower = () => {
+
+  function follower() {
     navigate("/followerUser");
   };
-  const following = () => {
+  function following() {
     navigate("/followingsUser");
   };
-  const { signOut } = useContext(AuthContext);
+  function handleSignOut() {
+    signOut();
+    navigate("/");
+  }
+
   return (
     <LayoutComponent>
       <div className="home-container">
@@ -27,10 +34,10 @@ export const Home = () => {
           <br />
         </div>
         <div className="container-login-form-btn">
-          <button onClick={signOut} type="submit" className="login-form-btn">Deslogar</button>
-          <button type="button" onClick={search} className="login-form-btn">Procurar usuário</button>
-          <button type="button" onClick={follower} className="login-form-btn">Seguidores</button>
-          <button type="button" onClick={following} className="login-form-btn">Seguindo</button>
+          <button onClick={handleSignOut} style={{ marginBottom: "10px" }} type="submit" className="login-form-btn">Deslogar</button>
+          <button type="button" style={{ marginBottom: "10px" }} onClick={search} className="login-form-btn">Procurar usuário</button>
+          <button type="button" style={{ marginBottom: "10px" }} onClick={follower} className="login-form-btn">Seguidores</button>
+          <button type="button" style={{ marginBottom: "10px" }} onClick={following} className="login-form-btn">Seguindo</button>
         </div>
       </div>
     </LayoutComponent>
