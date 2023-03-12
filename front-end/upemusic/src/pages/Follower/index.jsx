@@ -1,29 +1,31 @@
 import { LayoutComponent } from "../../components/LayoutComponents";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 
 import api from "../../services/api";
 
 
 export const Follower = () => {
     const logadoId = JSON.parse(localStorage.getItem('@Auth:user')).id
-    const [followingUsers, setFollowingUsers] = useState([]);
-
-
-
+    const [followersUsers, setFollowersUsers] = useState([]);
     const navigate = useNavigate();
-    const search = () => {
+
+
+    function search(){
         navigate("/searchUser");
     };
-    const getFollowers = async (event) => {
+    async function getFollowers() {
         api.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('@Auth:token')}`;
-        try {
-            const response = await api.get('/followsUser', logadoId)
-            setFollowingUsers(response.data.usernames)
-        } catch (error) {
-            alert(error)
-        }
+        await api.get('/followsUser', logadoId)
+            .then(response => {
+                setFollowersUsers(response.data.listaSeguidores)
+            }).catch(erro => {
+                console.log(erro)
+            })
     }
+    useEffect(() => {
+        console.log(followersUsers)
+    }, [followersUsers])
     return (
         <LayoutComponent>
             <div className="home-container">
@@ -38,11 +40,15 @@ export const Follower = () => {
                     <button type="button" onClick={getFollowers} className="login-form-btn">Buscar seguidores</button>
                     <button type="button" onClick={search} className="login-form-btn">Procurar usuários</button>
                 </div>
-                <ul>
-                    {followingUsers && followingUsers.length > 0 && followingUsers.map((username) => (
-                        <li key={username}>{username}</li>
+                <span>
+                    {followersUsers.map((user,index) =>(
+                        <h1 key={index}>
+                            {
+                                user.username
+                            }
+                        </h1>
                     ))}
-                </ul>
+                </span>
             </div>
         </LayoutComponent>
     );
