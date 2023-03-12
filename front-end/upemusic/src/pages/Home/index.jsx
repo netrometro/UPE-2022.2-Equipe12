@@ -9,6 +9,12 @@ export const Home = () => {
   const search = () => {
     navigate("/searchUser");
   };
+  const follower = () => {
+    navigate("/followerUser");
+  };
+  const following = () => {
+    navigate("/followingsUser");
+  };
   const { signOut } = useContext(AuthContext);
   return (
     <LayoutComponent>
@@ -23,6 +29,8 @@ export const Home = () => {
         <div className="container-login-form-btn">
           <button onClick={signOut} type="submit" className="login-form-btn">Deslogar</button>
           <button type="button" onClick={search} className="login-form-btn">Procurar usuário</button>
+          <button type="button" onClick={follower} className="login-form-btn">Seguidores</button>
+          <button type="button" onClick={following} className="login-form-btn">Seguindo</button>
         </div>
       </div>
     </LayoutComponent>
