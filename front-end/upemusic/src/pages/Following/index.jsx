@@ -16,7 +16,7 @@ export const Following = () => {
 
     async function getFollowing() {
         api.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('@Auth:token')}`;
-        await api.get('/followingsUser', logadoId)
+        await api.get('/followingsUser', {logadoId})
             .then(response => {
                 setFollowingUsers(response.data.listaSeguindo)
             }).catch(erro => {

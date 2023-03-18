@@ -11,6 +11,7 @@ const userRoutes = app => {
     app.get("/followsUser",authMid,followsUser),
     app.delete("/unfollowUser",authMid,unfollowUser),
     app.get("/followingsUser",authMid,followingsUser)
+    
 
 }
 

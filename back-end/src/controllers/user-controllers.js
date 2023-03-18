@@ -89,22 +89,29 @@ export const unfollowUser = async (req, res) => {
 
 // função para ver os seguidores do usuário
 export const followsUser = async (req, res) => {
-    const { followerId } = req.params;
-    const currentUser = req.userId;
-    const follows = await prisma.follows.findMany({ where: { followerId }, distinct: ['followerId'] })
+    const { followerId } = req.query;
+    console.log(followerId)
     const seguidores = {
-        followerId: currentUser,
+        followerId: followerId,
         listaSeguidores: []
     }
-    await Promise.all(follows.map(async (item, index) => {
-        if (item.followerId !== currentUser) {
-            const user = await prisma.user.findUnique({ where: { id: item.followerId }, select: { id: true, username: true } })
-                .then(item => {
-                    console.log("User", item)
-                    seguidores.listaSeguidores.push(item)
-                })
+    seguidores.listaSeguidores = await prisma.user.findUnique({
+        where: { id: seguidores.followerId },
+        select: {
+            followers: {
+                select: {
+                    follower: {
+                        select: {
+                            id: true,
+                            username: true
+
+                        }
+
+                    }
+                }
+            }
         }
-    }))
+    })
     return res.json(seguidores)
 }
 
@@ -129,3 +136,5 @@ export const followingsUser = async (req, res) => {
     }))
     return res.json(seguindo)
 }
+
+

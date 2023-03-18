@@ -1,6 +1,6 @@
 import { LayoutComponent } from "../../components/LayoutComponents";
 import { useNavigate } from "react-router-dom";
-import { useState,useEffect } from "react";
+import { useState} from "react";
 
 import api from "../../services/api";
 
@@ -16,16 +16,14 @@ export const Follower = () => {
     };
     async function getFollowers() {
         api.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('@Auth:token')}`;
-        await api.get('/followsUser', logadoId)
+        await api.get('/followsUser',{params:{followerId:logadoId}})
             .then(response => {
-                setFollowersUsers(response.data.listaSeguidores)
+                console.log(response.data.listaSeguidores.followers)
+                setFollowersUsers(response.data.listaSeguidores.followers)
             }).catch(erro => {
                 console.log(erro)
             })
     }
-    useEffect(() => {
-        console.log(followersUsers)
-    }, [followersUsers])
     return (
         <LayoutComponent>
             <div className="home-container">
@@ -44,7 +42,7 @@ export const Follower = () => {
                     {followersUsers.map((user,index) =>(
                         <h1 key={index}>
                             {
-                                user.username
+                                user.follower.username
                             }
                         </h1>
                     ))}
