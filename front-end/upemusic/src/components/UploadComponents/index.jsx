@@ -17,7 +17,7 @@ export const UploadComponents = () => {
   return (
     <div className="container">
       <form method='post' encType='multipart/form-data' onSubmit={handleUpload} className="form">
-        <input type="file" name="file" className='Button' />
+        <input type="file" name="file" className='Button' accept="audio/mpeg" />
         <input type="submit" value="upload" className='Button' />
       </form>
     </div>
