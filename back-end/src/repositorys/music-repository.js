@@ -66,6 +66,23 @@ async function getMusic(req, res) {
   }
 }
 
+async function deleteMusic(hash) {
+  const music = await prisma.music.findUnique({
+    where: { hash }
+  });
+
+  if (!music) {
+    throw new Error("Music not found");
+  }
+
+  const filePath = getFilePath(music.hash, music.ext);
+  fs.unlinkSync(filePath);
+
+  await prisma.music.delete({
+    where: { id: music.id }
+  });
+}
+
 function getFilePath(hash, ext) {
   return `${__dirname}/../uploads/${hash}.${ext}`;
 }
@@ -99,5 +116,5 @@ function generateFileHash(filePath) {
 module.exports = {
   importMusic,
   getMusic,
+  deleteMusic,
 };
-

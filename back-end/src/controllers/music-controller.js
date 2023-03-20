@@ -25,6 +25,7 @@ const streamMusic = async (req, res) => {
         'Accept-Ranges': 'bytes',
         'Content-Length': chunksize,
         'Content-Type': 'audio/mpeg',
+        'Cache-Control': 'public, max-age=31536000, immutable', // Adicionado
       };
       res.writeHead(206, head);
       file.pipe(res);
@@ -32,6 +33,7 @@ const streamMusic = async (req, res) => {
       const head = {
         'Content-Length': fileSize,
         'Content-Type': 'audio/mpeg',
+        'Cache-Control': 'public, max-age=31536000, immutable', // Adicionado
       };
       res.writeHead(200, head);
       fs.createReadStream(filePath).pipe(res);
@@ -41,3 +43,4 @@ const streamMusic = async (req, res) => {
     res.status(500).send('Erro ao recuperar música');
   }
 };
+
