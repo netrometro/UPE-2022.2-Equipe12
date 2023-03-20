@@ -1,5 +1,6 @@
 const multer = require("multer");
 const path = require("path");
+const crypto = require("crypto");
 const express = require('express');
 const app = express();
 
@@ -8,13 +9,12 @@ const storage = multer.diskStorage({
     cb(null, __dirname + "/../uploads")
   },
   filename: function(req, file, cb){
-    // filename: function(req, file, cb) {
-    //   const extensaoArquivo = file.originalname.split
-    // }
-    const fileName = file.originalname.split("."); // separa o nome do arquivo da extensão
-    const ext = fileName.pop(); // remove a extensão do nome do arquivo
-    const newFileName = `${fileName.join("_")}_${Date.now()}.${ext}`; // adiciona o separador e a data
-    cb(null, newFileName);
+    const hash = crypto.createHash("sha256");
+    file.on("data", data => hash.update(data));
+    file.on("end", () => {
+      const newFileName = `${hash.digest("hex")}.${file.originalname.split(".").pop()}`;
+      cb(null, newFileName);
+    });
   }
 })
 
