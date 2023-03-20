@@ -11,7 +11,7 @@ const userRoutes = app => {
   app.get("/users", authMid, getUsers);
   app.get("/music/:musicId", musicController.streamMusic);
   app.get("/music/user/:userId", authMid, musicController.getMusicByUser);
-  app.post("/upload", uploadMid, async (req, res) => {
+  app.post("/upload", uploadMid.single('file'), async (req, res) => {
     await importMusic(req.query.userId, req.file.filename, req.file.originalname, req.file.path);
     res.send("Arquivo Recebido com sucesso");
   });
