@@ -2,6 +2,8 @@ const prisma = require("../prisma/client");
 
 const { createHash } = require('crypto');
 const fs = require('fs');
+const path = require('path');
+
 
 async function importMusic(userId, filePath) {
   const { name, ext } = parseFilePath(filePath);
@@ -67,6 +69,11 @@ async function getMusic(req, res) {
 }
 
 async function deleteMusic(hash) {
+    try {
+        fs.unlinkSync(filePath);
+      } catch (error) {
+        throw new Error(`Error deleting file: ${error.message}`);
+      }
   const music = await prisma.music.findUnique({
     where: { hash }
   });
@@ -84,8 +91,13 @@ async function deleteMusic(hash) {
 }
 
 function getFilePath(hash, ext) {
-    return path.join(__dirname, '..', 'uploads', `${hash}.${ext}`);
+    try {
+      return path.join(__dirname, '..', 'uploads', `${hash}.${ext}`);
+    } catch (error) {
+      throw new Error(`Error joining path: ${error.message}`);
+    }
 }
+
 
 function parseFilePath(filePath) {
   const parts = filePath.split(".");
