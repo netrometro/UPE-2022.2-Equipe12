@@ -84,7 +84,7 @@ async function deleteMusic(hash) {
 }
 
 function getFilePath(hash, ext) {
-  return `${__dirname}/../uploads/${hash}.${ext}`;
+    return path.join(__dirname, '..', 'uploads', `${hash}.${ext}`);
 }
 
 function parseFilePath(filePath) {
