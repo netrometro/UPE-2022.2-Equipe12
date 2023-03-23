@@ -1,6 +1,7 @@
 import {create, getUsers,getUser,followUser, followsUser,unfollowUser,followingsUser} from "../controllers/user-controllers"
 import { authenticate } from "../controllers/auth-controller";
 const authMid = require('../middlewares/auth')
+const uploadMusic = require('../middlewares/uploadMusic')
 
 const userRoutes = app => {
     app.post("/register", create),
@@ -11,15 +12,18 @@ const userRoutes = app => {
     app.get("/followsUser",authMid,followsUser),
     app.delete("/unfollowUser",authMid,unfollowUser),
     app.get("/followingsUser",authMid,followingsUser)
-    app.post("/upload-music", async (req, res) => {
-        // return res.status(400).json({
-        //     erro: true,
-        //     mensagem: "Erro no upload!"
-        // });
-        return res.json({
-            erro: false,
-            mensagem: "Upload realizado com sucesso!"
-        })
+    app.post("/upload-music", uploadMusic.single('music'), async (req, res) => {
+        if (req.file){
+            console.log(req.file);
+            return res.json({
+                erro: false,
+                mensagem: "Upload realizado com sucesso!"
+            })
+        }
+        return res.status(400).json({
+            erro: true,
+            mensagem: "Erro no upload!"
+        });
     })
 
 }
