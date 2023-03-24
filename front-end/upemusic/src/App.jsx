@@ -6,10 +6,10 @@ import "./styles.css";
 export const App = () => {
   
   return (
-    <Upload />
-    // <AuthProvider>
-    //     <AppRouter/>
-    // </AuthProvider>
+    // <Upload />
+    <AuthProvider>
+        <AppRouter/>
+    </AuthProvider>
     
   );
 }
