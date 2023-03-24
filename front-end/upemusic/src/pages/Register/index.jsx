@@ -16,16 +16,14 @@ export const Register = () => {
     if (password === password2) {
       if (name !== '' && email !== '' && password !== '' && password2 !== '') {
         try {
-          api.post("/register", {
-            name: name,
+          await api.post("/register", {
+            username: name,
             email: email,
             password: password
-          },
-          ).then((response) => {
-            alert('Cadastrado com sucesso!', (response.success))
           })
+          alert("Cadastrado com sucesso!")
         }catch(error){
-          alert("Lembre-se, cada username é único! O E-mail também é único! Verifique seus dados!", error)
+          alert("Erro no registro: " + error.response.data.error)
         }
             
             

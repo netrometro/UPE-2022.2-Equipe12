@@ -18,12 +18,6 @@ export const Login = () => {
   const handleSignIn = async (e) => {
     e.preventDefault()
     if (email !== '' && password !== '') {
-
-      // api.post("/authenticate", {
-      //   email: email,
-      //   password: password,
-
-      // })
       try{
         await signIn(email, password);
       }catch(error){
