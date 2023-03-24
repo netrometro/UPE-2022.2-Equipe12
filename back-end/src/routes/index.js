@@ -2,6 +2,7 @@ import {create, getUsers,getUser,followUser, followsUser,unfollowUser,followings
 import { authenticate } from "../controllers/auth-controller";
 const authMid = require('../middlewares/auth')
 const uploadMusic = require('../middlewares/uploadMusic')
+var cors = require('cors');
 
 const userRoutes = app => {
     app.post("/register", create),
@@ -12,6 +13,13 @@ const userRoutes = app => {
     app.get("/followsUser",authMid,followsUser),
     app.delete("/unfollowUser",authMid,unfollowUser),
     app.get("/followingsUser",authMid,followingsUser)
+    app.use((req, res, next) => {
+        res.header("Access-Control-Allow-Origin", "*")
+        res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
+        res.header("Access-Control-Allow-Headers", "X-PINGOTHER , Content-Type, Authorization");
+        app.use(cors());
+        next();
+    })
     app.post("/upload-music", uploadMusic.single('music'), async (req, res) => {
         if (req.file){
             console.log(req.file);
