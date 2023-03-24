@@ -18,7 +18,7 @@ export const create = async (req, res) => {
         const user = await prisma.user.create({ data: { email, username, password:hashPassword } })
         return res.status(200).send({ success: 'Usuário cadastrado com sucesso' })
 
-    } catch (e) {
+    } catch (error) {
         return res.status(400).send({ error: 'Erro no registro' })
 
     }
