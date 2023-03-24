@@ -1,22 +1,25 @@
 import bcrypt from "bcrypt"
 import { prisma } from "../lib/prisma"
 
-import { userValidation } from "../validators/user-validation"
-import { createUser } from "../repositorys/user-repositorys";
-
 
 // função para criar usuário
 export const create = async (req, res) => {
+    const {email,password,username} = req.body
     try {
-        await userValidation.validate(req.body);
-        const hashPassword = await bcrypt.hash(req.body.password, 10);
-        req.body.password = hashPassword;
-        const user = await createUser(req.body);
-
-        res.status(200).send(user)
+        const existingUser = await prisma.user.findUnique({ where: { email } })
+        if (existingUser) {
+            return res.status(400).send({ error: 'Usuário com esse email já existe!' })
+        }
+        const existingUsername = await prisma.user.findUnique({ where: { username } })
+        if (existingUsername) {
+            return res.status(400).send({ error: 'Usuário com esse username já existe!' })
+        }
+        const hashPassword = await bcrypt.hash(password, 10);
+        const user = await prisma.user.create({ data: { email, username, password:hashPassword } })
+        return res.status(200).send({ success: 'Usuário cadastrado com sucesso' })
 
     } catch (e) {
-        res.status(400).send(e)
+        return res.status(400).send({ error: 'Erro no registro' })
 
     }
 }

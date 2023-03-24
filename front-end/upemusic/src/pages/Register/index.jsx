@@ -17,7 +17,7 @@ export const Register = () => {
       if (name !== '' && email !== '' && password !== '' && password2 !== '') {
         try {
           api.post("/register", {
-            name: name,
+            username: name,
             email: email,
             password: password
           },
