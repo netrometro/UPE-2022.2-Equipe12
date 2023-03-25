@@ -26,8 +26,9 @@ const userRoutes = app => {
     })
     app.post("/upload-music", uploadMusic.single('music'), async (req, res) => {
         if (req.file){
-            console.log(req.file);
+            console.log("teste: ", req.file)
             await Music.create({music: req.file.filename})
+            console.log(req.file.filename)
             .then(() => {
                 return res.json({
                     erro: false,
@@ -36,7 +37,7 @@ const userRoutes = app => {
             }).catch(() => {
                 return res.status(400).json({
                     erro: true,
-                    mensagem: "Erro: Upload não realizado!"
+                    mensagem: "Erro: Upload não realizado com sucesso!"
                 });
             });
         }else{
