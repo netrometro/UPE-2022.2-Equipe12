@@ -4,6 +4,8 @@ const authMid = require('../middlewares/auth')
 const uploadMusic = require('../middlewares/uploadMusic')
 var cors = require('cors');
 
+const db = require('../models/db');
+
 const userRoutes = app => {
     app.post("/register", create),
     app.post("/authenticate", authenticate),
