@@ -27,19 +27,24 @@ const userRoutes = app => {
     app.post("/upload-music", uploadMusic.single('music'), async (req, res) => {
         if (req.file){
             console.log("teste: ", req.file)
-            await Music.create({music: req.file.filename})
-            console.log(req.file.filename)
-            .then(() => {
-                return res.json({
-                    erro: false,
-                    mensagem: "Upload realizado com sucesso!"
-                });
-            }).catch(() => {
-                return res.status(400).json({
-                    erro: true,
-                    mensagem: "Erro: Upload não realizado com sucesso!"
-                });
-            });
+            try {
+                const music = await Music.findAll()
+                await Music.create({music: req.file.filename})
+                console.log("Upload realizado com sucesso!")
+            } catch (error) {
+                console.log("Erro: Upload não realizado com sucesso!")
+            }
+            // .then(() => {
+            //     return res.json({
+            //         erro: false,
+            //         mensagem: "Upload realizado com sucesso!"
+            //     });
+            // }).catch(() => {
+            //     return res.status(400).json({
+            //         erro: true,
+            //         mensagem: "Erro: Upload não realizado com sucesso!"
+            //     });
+            // });
         }else{
             return res.status(400).json({
                 erro: true,

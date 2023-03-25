@@ -3,14 +3,11 @@ const db = require('./db');
 
 const Music = db.define('musics', {
   id: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.DataTypes.INTEGER,
     autoIncrement: true,
-    allowNull: false,
     primaryKey: true
   },
-  music: {
-    type: Sequelize.STRING
-  }
+  music: Sequelize.DataTypes.TEXT
 });
 
 // Music.sync();
