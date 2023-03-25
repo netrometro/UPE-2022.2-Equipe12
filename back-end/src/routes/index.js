@@ -4,7 +4,9 @@ const authMid = require('../middlewares/auth')
 const uploadMusic = require('../middlewares/uploadMusic')
 var cors = require('cors');
 
-const db = require('../models/db');
+// const db = require('../models/db');
+
+const Music = require('../models/Musics');
 
 const userRoutes = app => {
     app.post("/register", create),
@@ -25,16 +27,25 @@ const userRoutes = app => {
     app.post("/upload-music", uploadMusic.single('music'), async (req, res) => {
         if (req.file){
             console.log(req.file);
-            return res.json({
-                erro: false,
-                mensagem: "Upload realizado com sucesso!"
-            })
+            await Music.create({music: req.file.filename})
+            .then(() => {
+                return res.json({
+                    erro: false,
+                    mensagem: "Upload realizado com sucesso!"
+                });
+            }).catch(() => {
+                return res.status(400).json({
+                    erro: true,
+                    mensagem: "Erro: Upload não realizado!"
+                });
+            });
+        }else{
+            return res.status(400).json({
+                erro: true,
+                mensagem: "Erro no upload! Necessário enviar uma música mpeg, ou mp4"
+            });
         }
-        return res.status(400).json({
-            erro: true,
-            mensagem: "Erro no upload!"
-        });
-    })
+    });
 
 }
 
