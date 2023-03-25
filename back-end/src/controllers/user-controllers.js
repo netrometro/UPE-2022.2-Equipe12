@@ -140,4 +140,26 @@ export const followingsUser = async (req, res) => {
     return res.json(seguindo)
 }
 
-
+export const updateUser = async (req, res) => {
+    const userId = req.params.userId;
+    const { username, password, favorite_artist, favorite_music, favorite_genre, description } = req.body;
+  
+    try {
+      const data = {};
+      if (username) data.username = username;
+      if (password) data.password = password;
+      if (favorite_artist) data.favorite_artist = favorite_artist;
+      if (favorite_music) data.favorite_music = favorite_music;
+      if (favorite_genre) data.favorite_genre = favorite_genre;
+      if (description) data.description = description;
+  
+      const user = await prisma.user.update({
+        where: { id: userId },
+        data: data,
+      });
+      return res.status(200).send({ success: 'Informações do usuário atualizadas com sucesso' });
+    } catch (error) {
+      return res.status(400).send({ error: 'Erro ao atualizar informações do usuário' });
+    }
+  };
+  

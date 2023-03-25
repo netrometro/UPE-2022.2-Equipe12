@@ -11,14 +11,18 @@ datasource db {
 }
 
 model User {
-  id         String    @id @default(uuid())
-  email      String    @unique
-  username   String    @unique
-  password   String
-  created_at DateTime  @default(now())
-  update_at  DateTime  @updatedAt
-  followers  Follows[] @relation("following")
-  following  Follows[] @relation("follower")
+  id              String    @id @default(uuid())
+  email           String    @unique
+  username        String    @unique
+  password        String
+  created_at      DateTime  @default(now())
+  update_at       DateTime  @updatedAt
+  followers       Follows[] @relation("following")
+  following       Follows[] @relation("follower")
+  favorite_artist String?
+  favorite_music  String?
+  favorite_genre  String?
+  description     String?
 
   @@map("users")
 }
