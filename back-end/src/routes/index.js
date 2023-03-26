@@ -36,21 +36,16 @@ const userRoutes = app => {
             try {
                 const music = await Music.findAll()
                 await Music.create({music: req.file.filename})
-                console.log("Upload realizado com sucesso!")
+                return res.json({
+                    erro: false,
+                    mensagem: "Upload realizado com sucesso!"
+                });
             } catch (error) {
-                console.log("Erro: Upload não realizado com sucesso!")
+                return res.status(400).json({
+                    erro: true,
+                    mensagem: "Erro: Upload não realizado com sucesso!"
+                });
             }
-            // .then(() => {
-            //     return res.json({
-            //         erro: false,
-            //         mensagem: "Upload realizado com sucesso!"
-            //     });
-            // }).catch(() => {
-            //     return res.status(400).json({
-            //         erro: true,
-            //         mensagem: "Erro: Upload não realizado com sucesso!"
-            //     });
-            // });
         }else{
             return res.status(400).json({
                 erro: true,
