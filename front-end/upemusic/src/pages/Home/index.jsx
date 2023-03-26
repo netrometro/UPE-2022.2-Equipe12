@@ -2,7 +2,7 @@ import { LayoutComponent } from "../../components/LayoutComponents";
 import { useContext } from "react";
 import { AuthContext } from "../../context/auth";
 import { useNavigate } from "react-router-dom";
-
+import { Footer } from "../../components/Footer";
 
 export const Home = () => {
   const navigate = useNavigate();
@@ -25,7 +25,7 @@ export const Home = () => {
     navigate("/");
   }
   return (
-    <LayoutComponent>
+    <><LayoutComponent>
       <div className="home-container">
         <div className="home-content">
           <h1 className="home-title">
@@ -48,6 +48,7 @@ export const Home = () => {
           </button>
         </div>
       </div>
-    </LayoutComponent>
+    </LayoutComponent><Footer /></>
+
   );
 };

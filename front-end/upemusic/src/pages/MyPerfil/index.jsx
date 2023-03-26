@@ -55,6 +55,7 @@ export const MyPerfil = () => {
 
         try {
             const response = await api.delete(`/deleteUser/${userId}`)
+            alert("Conta excluída com sucesso!")
             handleSignOut();
         } catch (error) {
             return null;
