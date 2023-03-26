@@ -7,6 +7,7 @@ import {SearchUser} from "../pages/SearchUser"
 import { Follower } from "../pages/Follower"
 import { Following } from "../pages/Following"
 import {PerfilUser} from "../pages/PerfilUser"
+import { MyPerfil } from "../pages/MyPerfil"
 
 export const AppRouter = () =>{
     return (
@@ -20,6 +21,7 @@ export const AppRouter = () =>{
                     <Route path="/followerUser" element={<Follower/>}/>
                     <Route path="/followingsUser" element={<Following/>}/>
                     <Route path="/perfilUser/:id" element={<PerfilUser/>}/>
+                    <Route path="/myperfilUser/:id" element={<MyPerfil/>}/>
                 </Route>            
             </Routes>
         </Router>
