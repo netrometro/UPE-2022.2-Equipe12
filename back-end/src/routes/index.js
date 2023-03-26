@@ -39,7 +39,8 @@ const userRoutes = app => {
         .then((music) => {
             return res.json({
                 erro: false,
-                music
+                music,
+                url: "http://localhost:3333/files/users/"
             })
         }).catch(() => {
             return res.status(400).json({
