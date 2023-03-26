@@ -21,7 +21,7 @@ export const MyPerfil = () => {
 
                 const response = await api.get(`/infoUser/${id}`);
                 const userData = response.data;
-                
+
                 setUsername(userData.username);
                 setFavorite_artist(userData.favorite_artist);
                 setFavorite_music(userData.favorite_music);
@@ -35,6 +35,14 @@ export const MyPerfil = () => {
         fetchUser();
     }, [id]);
 
+    const deleteUser = async () => {
+        try {
+            const response = await api.delete(`/deleteUser/${id}`)
+            return response.data;
+        } catch (error) {
+            return null;
+        }
+    }
     const update = async (e) => {
         api.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('@Auth:token')}`;
 
@@ -110,6 +118,9 @@ export const MyPerfil = () => {
 
                 <div className="container-login-form-btn">
                     <button type="submit" className="login-form-btn">Atualizar dados</button>
+                </div>
+                <div className="container-login-form-btn">
+                    <button type="submit" className="login-form-btn">Deletar conta</button>
                 </div>
             </form>
         </LayoutComponent>
