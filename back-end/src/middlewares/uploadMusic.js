@@ -6,7 +6,7 @@ module.exports = (multer({
     // },
     storage: multer.diskStorage({
       destination: (req, file, cb) => {
-        cb(null, './uploads')
+        cb(null, './public/upload/users')
       },
       filename: (req, file, cb) => {
         cb(null, Date.now().toString() + "_" + file.originalname)

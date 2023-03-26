@@ -3,15 +3,18 @@ import { authenticate } from "../controllers/auth-controller";
 import { followUser, followsUser } from "../controllers/follows/follower-controller"
 import { unfollowUser } from "../controllers/follows/unfollower-controller"
 import { followingsUser } from "../controllers/follows/following-controller"
+import express from "express";
+import path from "path";
 const authMid = require('../middlewares/auth')
 const uploadMusic = require('../middlewares/uploadMusic')
 var cors = require('cors');
 
-// const db = require('../models/db');
-
 const Music = require('../models/Musics');
 
 const userRoutes = app => {
+    const router = express.Router();
+    router.use('/files', express.static(path.resolve(__dirname, "public", "upload")));
+
     app.post("/register", create),
     app.post("/authenticate", authenticate),
     app.get("/users", authMid, getUsers),
@@ -30,11 +33,26 @@ const userRoutes = app => {
         app.use(cors());
         next();
     })
+    app.use(router);
+    app.get("/list-music", async(req, res) =>{
+        await Music.findAll()
+        .then((music) => {
+            return res.json({
+                erro: false,
+                music
+            })
+        }).catch(() => {
+            return res.status(400).json({
+                erro: true,
+                mensagem: "Erro: Nenhuma música encontrada!"
+            })
+        })
+    });
     app.post("/upload-music", uploadMusic.single('music'), async (req, res) => {
         if (req.file){
             console.log("teste: ", req.file)
             try {
-                const music = await Music.findAll()
+                // const music = await Music.findAll()
                 await Music.create({music: req.file.filename})
                 return res.json({
                     erro: false,
