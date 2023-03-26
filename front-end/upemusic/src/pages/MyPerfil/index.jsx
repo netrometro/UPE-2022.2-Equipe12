@@ -1,18 +1,31 @@
 import { LayoutComponent } from "../../components/LayoutComponents";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { AuthContext } from "../../context/auth";
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+
 
 
 import api from "../../services/api";
 
 
 export const MyPerfil = () => {
+
+    function handleSignOut() {
+        signOut();
+        navigate("/");
+    }
+    const navigate = useNavigate();
+
     const { id } = useParams();
     const [username, setUsername] = useState("");
     const [favorite_artist, setFavorite_artist] = useState("");
     const [favorite_music, setFavorite_music] = useState("");
     const [favorite_genre, setFavorite_genre] = useState("");
     const [description, setDescription] = useState("");
+    const { signOut } = useContext(AuthContext);
+
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -36,9 +49,13 @@ export const MyPerfil = () => {
     }, [id]);
 
     const deleteUser = async () => {
+        const userId = id;
+        console.log(userId)
+        api.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('@Auth:token')}`;
+
         try {
-            const response = await api.delete(`/deleteUser/${id}`)
-            return response.data;
+            const response = await api.delete(`/deleteUser/${userId}`)
+            handleSignOut();
         } catch (error) {
             return null;
         }
@@ -120,7 +137,7 @@ export const MyPerfil = () => {
                     <button type="submit" className="login-form-btn">Atualizar dados</button>
                 </div>
                 <div className="container-login-form-btn">
-                    <button type="submit" className="login-form-btn">Deletar conta</button>
+                    <button type="button" onClick={deleteUser} className="login-form-btn">Deletar conta</button>
                 </div>
             </form>
         </LayoutComponent>
