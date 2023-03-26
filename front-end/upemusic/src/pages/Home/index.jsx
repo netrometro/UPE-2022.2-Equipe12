@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 export const Home = () => {
   const navigate = useNavigate();
   const { signOut } = useContext(AuthContext);
+  const logadoId = JSON.parse(localStorage.getItem('@Auth:user')).id
+
 
   function search() {
     navigate("/searchUser");
@@ -22,7 +24,6 @@ export const Home = () => {
     signOut();
     navigate("/");
   }
-
   return (
     <LayoutComponent>
       <div className="home-container">
@@ -38,6 +39,13 @@ export const Home = () => {
           <button type="button" style={{ marginBottom: "10px" }} onClick={search} className="login-form-btn">Procurar usuário</button>
           <button type="button" style={{ marginBottom: "10px" }} onClick={follower} className="login-form-btn">Seguidores</button>
           <button type="button" style={{ marginBottom: "10px" }} onClick={following} className="login-form-btn">Seguindo</button>
+          <button
+            type="button"
+            style={{ marginBottom: "10px" }}
+            onClick={() => navigate(`/myperfilUser/${logadoId}`)}
+            className="login-form-btn">
+            Ir para o meu perfil
+          </button>
         </div>
       </div>
     </LayoutComponent>
