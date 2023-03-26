@@ -67,22 +67,39 @@ export const updateUser = async (req, res) => {
     }
 };
 
+//informações do usuário
 export const getInfoUser = async (req, res) => {
     const userId = req.params.userId;
     try {
-      const user = await prisma.user.findUnique({
-        where: { id: userId },
-        select: {
-          id: true,
-          username: true,
-          favorite_artist: true,
-          favorite_music: true,
-          favorite_genre: true,
-          description: true
-        },
-      });
-      return res.status(200).send(user);
+        const user = await prisma.user.findUnique({
+            where: { id: userId },
+            select: {
+                id: true,
+                username: true,
+                favorite_artist: true,
+                favorite_music: true,
+                favorite_genre: true,
+                description: true
+            },
+        });
+        return res.status(200).send(user);
     } catch (error) {
-      return res.status(400).send({ error: 'Erro ao obter informações do usuário' });
+        return res.status(400).send({ error: 'Erro ao obter informações do usuário' });
     }
-  };
+};
+
+//deletar conta de usuário
+export const deleteUser = async (req, res) => {
+    const userId = req.params.userId;
+    try {
+        const user = await prisma.user.delete({
+            where: {
+                id: userId
+            }
+        });
+        return user;
+    } catch (e) {
+        console.error(e);
+        return null;
+    }
+}
