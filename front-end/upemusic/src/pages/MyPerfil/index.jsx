@@ -74,6 +74,7 @@ export const MyPerfil = () => {
         };
         try {
             const response = await api.put(`/myperfilUser/${userId}`, data);
+            alert("Informações do usuário atualizadas com sucesso!")
         } catch (error) {
             console.log(error);
         }
