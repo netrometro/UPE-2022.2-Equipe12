@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { LayoutComponent } from "../../components/LayoutComponents";
+import { PlayerMusic } from "../../components/PlayerMusic";
 import api from "../../services/api";
 
 
@@ -28,7 +29,8 @@ export const SearchMusic = () => {
 
   return (
       <LayoutComponent>
-          <div className="home-container">
+        <PlayerMusic />
+          {/* <div className="home-container">
               <div className="home-content">
                   <h1 className="home-title">
                       <span style={{ color: "#fff" }}>Suas Músicas</span>
@@ -46,7 +48,7 @@ export const SearchMusic = () => {
                   </div>
                 ))}
               </div>
-          </div>
+          </div> */}
       </LayoutComponent>
   );
 };
