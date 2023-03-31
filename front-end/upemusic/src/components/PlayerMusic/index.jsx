@@ -1,5 +1,8 @@
 import './style.css'
 import { HiMusicNote, HiPlay, HiChevronLeft, HiChevronRight } from "react-icons/hi";
+import api from "../../services/api";
+
+
 
 export const PlayerMusic = () => {
   const player = document.querySelector("#player");
@@ -11,35 +14,42 @@ export const PlayerMusic = () => {
   const duration = document.querySelector("#duration");
   const progressBar = document.querySelector(".progress-bar");
   const progress = document.querySelector(".progress");
-
-  const getMusics = async () => {
-    try {
-      const response = await api.get("/list-music");
-      const musicList = response.data.music.map((music) => ({
-        src: url + music,
-        name: music.split(".")[0],
-      }));
-      return musicList;
-    } catch (err) {
-      console.log(err.response);
-      return [];
-    }
-  };
   
-
-  const songs = await getMusics();
-
-
   const textButtonPlay = "<HiChevronLeft size='70%'/>";
   const textButtonPause = "<HiChevronRight size='50%' />";
-
+  
   let index = 0;
-
-  prevButton.onclick = () => prevNextMusic("prev");
-  nextButton.onclick = () => prevNextMusic();
-
-  playPauseButton.onclick = () => playPause();
-
+  let songs = [];
+  
+  const getMusics = async () => {
+    await api.get("/list-music").then((response) => {
+      console.log(response.data);
+      songs = response.data.music.map((music) => ({
+        src: response.data.url + music,
+        name: music,
+      }));
+      prevNextMusic("init");
+    }).catch((err) => {
+      console.log(err.response)
+    })
+  }
+  
+  const prevNextMusic = (type = "next") => {
+    if ((type === "next" && index + 1 === songs.length) || type === "init") {
+      index = 0;
+    } else if (type === "prev" && index === 0) {
+      index = songs.length;
+    } else {
+      index = type === "prev" && index ? index - 1 : index + 1;
+    }
+  
+    player.src = songs[index].src;
+    musicName.innerHTML = songs[index].name;
+    if (type !== "init") playPause();
+  
+    updateTime();
+  };
+  
   const playPause = () => {
     if (player.paused) {
       player.play();
@@ -49,50 +59,37 @@ export const PlayerMusic = () => {
       playPauseButton.innerHTML = textButtonPlay;
     }
   };
-
+  
   player.ontimeupdate = () => updateTime();
-
+  
   const updateTime = () => {
     const currentMinutes = Math.floor(player.currentTime / 60);
     const currentSeconds = Math.floor(player.currentTime % 60);
     currentTime.textContent = currentMinutes + ":" + formatZero(currentSeconds);
-
+  
     const durationFormatted = isNaN(player.duration) ? 0 : player.duration;
     const durationMinutes = Math.floor(durationFormatted / 60);
     const durationSeconds = Math.floor(durationFormatted % 60);
     duration.textContent = durationMinutes + ":" + formatZero(durationSeconds);
-
+  
     const progressWidth = durationFormatted
       ? (player.currentTime / durationFormatted) * 100
       : 0;
-
+  
     progress.style.width = progressWidth + "%";
   };
-
+  
   const formatZero = (n) => (n < 10 ? "0" + n : n);
-
+  
+  prevButton.onclick = () => prevNextMusic("prev");
+  nextButton.onclick = () => prevNextMusic();
+  playPauseButton.onclick = () => playPause();
   progressBar.onclick = (e) => {
     const newTime = (e.offsetX / progressBar.offsetWidth) * player.duration;
     player.currentTime = newTime;
   };
+  
 
-  const prevNextMusic = (type = "next") => {
-    if ((type == "next" && index + 1 === songs.length) || type === "init") {
-      index = 0;
-    } else if (type == "prev" && index === 0) {
-      index = songs.length;
-    } else {
-      index = type === "prev" && index ? index - 1 : index + 1;
-    }
-
-    player.src = songs[index].src;
-    musicName.innerHTML = songs[index].name;
-    if (type !== "init") playPause();
-
-    updateTime();
-  };
-
-  prevNextMusic("init");
 
   return (
     <div class="Card">

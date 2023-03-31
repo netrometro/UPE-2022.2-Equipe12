@@ -35,3 +35,4 @@ model Follows {
 
   @@id([followerId, followingId])
 }
+

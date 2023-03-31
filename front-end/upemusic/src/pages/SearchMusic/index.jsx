@@ -29,8 +29,8 @@ export const SearchMusic = () => {
 
   return (
       <LayoutComponent>
-        <PlayerMusic />
-          {/* <div className="home-container">
+        {/* <PlayerMusic /> */}
+          <div className="home-container">
               <div className="home-content">
                   <h1 className="home-title">
                       <span style={{ color: "#fff" }}>Suas Músicas</span>
@@ -44,11 +44,16 @@ export const SearchMusic = () => {
                     <span>{music.id}</span>
                     <br />
                     <span>{music.music}</span>
+                    <audio ref="audio_tag" src="./files/users/{music.music}" controls autoPlay/>
+                    {/* <audio controls>
+                      <source src="http://localhost:3333/files/users/{music.music}" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                    </audio> */}
                     <br />
                   </div>
                 ))}
               </div>
-          </div> */}
+          </div>
       </LayoutComponent>
   );
 };
