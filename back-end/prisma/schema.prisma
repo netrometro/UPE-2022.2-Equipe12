@@ -23,6 +23,7 @@ model User {
   favorite_music  String?
   favorite_genre  String?
   description     String?
+  Music           Music[]
 
   @@map("users")
 }
@@ -36,3 +37,11 @@ model Follows {
   @@id([followerId, followingId])
 }
 
+model Music {
+  id       String @id @default(cuid())
+  title    String
+  publicId String @unique
+  format   String
+  user     User   @relation(fields: [userId], references: [id])
+  userId   String
+}
