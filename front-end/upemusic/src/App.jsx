@@ -8,10 +8,10 @@ export const App = () => {
   
   return (
     // <Upload />
-    // <SearchMusic />
-    <AuthProvider>
-        <AppRouter/>
-    </AuthProvider>
+    <SearchMusic />
+    // <AuthProvider>
+    //     <AppRouter/>
+    // </AuthProvider>
     
   );
 }
