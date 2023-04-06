@@ -7,7 +7,7 @@ import express from "express";
 import path from "path";
 const authMid = require('../middlewares/auth')
 const uploadMusic = require('../middlewares/uploadMusic')
-const uploadRoute = require('../controllers/route-upload');
+const uploadCloudinary = require('../controllers/route-upload');
 var cors = require('cors');
 
 const Music = require('../models/Musics');
@@ -27,7 +27,7 @@ const userRoutes = app => {
     app.put("/myperfilUser/:userId", authMid, updateUser),
     app.get("/infoUser/:userId", authMid, getInfoUser),
     app.delete("/deleteUser/:userId", authMid, deleteUser)
-    app.use("/api/users" , uploadRoute);
+    app.use("/audio/upload" , uploadCloudinary);
     app.use((req, res, next) => {
         res.header("Access-Control-Allow-Origin", "*")
         res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
