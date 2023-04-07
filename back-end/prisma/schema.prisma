@@ -39,11 +39,24 @@ model Follows {
 
 model Music {
   id       String @id @default(cuid())
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  filename   String
-  assetId    String
-  publicId   String
+  asset_id        String
+  public_id       String
+  folder          String
+  filename        String
+  format          String
+  version         Int
+  resource_type   String
+  type            String
+  created_at      DateTime
+  uploaded_at     DateTime
+  bytes           Int
+  backup_bytes    Int
+  url             String
+  secure_url      String
+  status          String
+  access_mode     String
+  access_control  String?
+  etag            String
   user     User   @relation(fields: [userId], references: [id])
   userId   String
 }

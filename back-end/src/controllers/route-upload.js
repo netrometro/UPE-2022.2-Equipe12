@@ -3,13 +3,11 @@ const router = express.Router();
 const fs = require("fs");
 const cloudinary = require("../utils/cloudinary");
 const upload = require("../middlewares/multer");
-const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient();
+import { prisma, DateTime } from "../lib/prisma"
 const auth = require("../middlewares/auth");
 
-
 const uploadCloudinary = (req, res) => {
-  upload(req, res, (err) => {
+  upload(req, res, async (err) => {
     if (err) {
       return res.send(err);
     }
@@ -18,7 +16,10 @@ const uploadCloudinary = (req, res) => {
 
     const fName = req.file.originalname.split(".")[0];
 
-    const userId = req.user.id;
+    const userId = req.body;
+
+    console.log(req.headers)
+    console.log(req.userId);
 
     cloudinary.uploader.upload(
       path,
@@ -30,15 +31,37 @@ const uploadCloudinary = (req, res) => {
         if (err) return res.send(err);
     
         // Save the audio file to the database and associate it with the user
-        const savedAudio = await prisma.audio.create({
+        const savedAudio = await prisma.music.create({
           data: {
             filename: fName,
             assetId: audio.asset_id,
             publicId: audio.public_id,
-            userId: userId,
+            asset_id: audio.asset_id,
+            userId: {
+              connect: {
+                id: userId,
+              },
+            },
+            public_id: audio.public_id,
+            folder: audio.folder,
+            format: audio.format,
+            version: audio.version,
+            resource_type: audio.resource_type,
+            type: audio.type,
+            created_at: audio.created_at,
+            uploaded_at: audio.uploaded_at,
+            bytes: audio.bytes,
+            backup_bytes: audio.backup_bytes,
+            url: audio.url,
+            secure_url: audio.secure_url,
+            status: audio.status,
+            access_mode: audio.access_mode,
+            etag: audio.etag,
+            id: audio.id,
+            access_control: audio.access_control,
           },
         });
-    
+
         fs.unlinkSync(path);
         res.send(savedAudio);
       }
@@ -47,24 +70,3 @@ const uploadCloudinary = (req, res) => {
 }
 
 module.exports = uploadCloudinary;
-//  router.post('/upload', upload.single('music'), function (req, res) {
-//   cloudinary.uploader.upload(req.file.path, function (err, result){
-//     if(err) {
-//       console.log(err);
-//       return res.status(500).json({
-//         success: false,
-//         message: "Erro: Upload não realizado com sucesso!"
-//       })
-//     }
-
-//     res.status(200).json({
-//       success: true,
-//       message:"Upload realizado com sucesso!!",
-//       data: result
-//     })
-//   })
-// });
-
-
-
-// O que eu estou fazendo aqui é pegar os dados do formulário e colocar no banco de dados

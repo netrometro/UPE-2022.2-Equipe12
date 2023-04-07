@@ -8,8 +8,8 @@ import path from "path";
 const authMid = require('../middlewares/auth')
 const uploadMusic = require('../middlewares/uploadMusic')
 const uploadCloudinary = require('../controllers/route-upload');
-const getAudio = require('../controllers/get-audio');
 const auth = require("../middlewares/auth");
+const getAudio = require('../controllers/get-audio');
 var cors = require('cors');
 
 const Music = require('../models/Musics');
