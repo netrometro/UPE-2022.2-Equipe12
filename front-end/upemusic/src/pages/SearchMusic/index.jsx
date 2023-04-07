@@ -6,18 +6,17 @@ import api from "../../services/api";
 
 export const SearchMusic = () => {
   const [data, setData] = useState([]);
-  const [url, setUrl] = useState([]);
 
 
   const getMusics = async () => {
     // const headers = { //para quando o usuário estiver logado
     //   'headers'
     // }
-    await api.get("/list-music")
+    await api.get("/audio/get")
     .then((response) => {
       console.log(response.data);
-      setData(response.data.music);
-      setUrl(response.data.url);
+      setData(response.data.data);
+      // setUrl(response.data.url);
     }).catch((err) => {
       console.log(err.response)
     })
@@ -40,11 +39,11 @@ export const SearchMusic = () => {
               </div>
               <div className="container-login-form-btn">
                 {data.map(music => (
-                  <div key={music.id}>
-                    <span>{music.id}</span>
+                  <div key={music.asset_id}>
+                    <span>{music.public_id}</span>
                     <br />
-                    <span>{music.music}</span>
-                    <audio ref="audio_tag" src="./files/users/{music.music}" controls autoPlay/>
+                    <span>{music.filename}</span>
+                    <audio src={music.secure_url} controls autoPlay/>
                     {/* <audio controls>
                       <source src="http://localhost:3333/files/users/{music.music}" type="audio/mpeg">
                     Your browser does not support the audio element.

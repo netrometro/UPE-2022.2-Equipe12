@@ -7,19 +7,19 @@ const getAudio = async (req, res, next) => {
       resource_type: "raw",
       type: "upload",
       prefix: "AudioUploads/",
-      tags: "audio",
+      // tags: "audio",
       // max_results: 10
     };
 
     // Executa a busca
     const result = await cloudinary.search
-      .expression(`resource_type:raw AND tags:audio`)
+      .expression(`resource_type:raw`)
       .sort_by("public_id", "desc")
       // .max_results(10)
       .execute();
 
     // Retorna os resultados
-    res.status(200).json({ success: true, data: result.resources });
+    res.status(200).json({ success: true, data: result.resources, message: "Busca por arquivos de áudio realizada com sucesso"  });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, message: "Erro ao buscar arquivos de áudio" });

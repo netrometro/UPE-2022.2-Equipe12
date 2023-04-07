@@ -14,7 +14,7 @@ const uploadCloudinary = (req, res) => {
 
     const fName = req.file.originalname.split(".")[0];
 
-    const userId = req.user.id;
+    // const userId = req.user.id;
 
     cloudinary.uploader.upload(
       path,
@@ -22,22 +22,6 @@ const uploadCloudinary = (req, res) => {
         resource_type: "raw",
         public_id: `AudioUploads/${fName}`,
       },
-      // async (err, audio) => {
-      //   if (err) return res.send(err);
-
-      //   // Save the audio file to the database and associate it with the user
-      //   const savedAudio = await prisma.music.create({
-      //     data: {
-      //       filename: fName,
-      //       assetId: audio.asset_id,
-      //       publicId: audio.public_id,
-      //       userId: userId,
-      //     },
-      //   });
-
-      //   fs.unlinkSync(path);
-      //   res.send(savedAudio);
-      // }
       (err, audio) => {
         if (err) return res.send(err);
 
