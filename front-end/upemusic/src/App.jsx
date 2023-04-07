@@ -8,7 +8,7 @@ export const App = () => {
   
   return (
     // <Upload />
-    // <SearchMusic />
+    //<SearchMusic />
     <AuthProvider>
         <AppRouter/>
     </AuthProvider>

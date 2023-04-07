@@ -16,7 +16,7 @@ const uploadCloudinary = (req, res) => {
 
     const fName = req.file.originalname.split(".")[0];
 
-    const userId = req.body;
+    const userId = req.userId;
 
     console.log(req.headers)
     console.log(req.userId);
@@ -29,38 +29,39 @@ const uploadCloudinary = (req, res) => {
       },
       async (err, audio) => {
         if (err) return res.send(err);
-    
+        console.log(audio);
+
         // Save the audio file to the database and associate it with the user
         const savedAudio = await prisma.music.create({
           data: {
             filename: fName,
-            assetId: audio.asset_id,
-            publicId: audio.public_id,
             asset_id: audio.asset_id,
-            userId: {
+            public_id: audio.public_id,
+            user: {
               connect: {
                 id: userId,
               },
             },
-            public_id: audio.public_id,
-            folder: audio.folder,
-            format: audio.format,
-            version: audio.version,
+            signature: audio.signature,
             resource_type: audio.resource_type,
-            type: audio.type,
+            version: audio.version,
+            version_id: audio.version_id,
             created_at: audio.created_at,
-            uploaded_at: audio.uploaded_at,
             bytes: audio.bytes,
-            backup_bytes: audio.backup_bytes,
+            type: audio.type,
+            etag: audio.etag,
+            placeholder: audio.placeholder,
             url: audio.url,
             secure_url: audio.secure_url,
-            status: audio.status,
-            access_mode: audio.access_mode,
-            etag: audio.etag,
+            folder: audio.folder,
+            overwritten: audio.overwritten,
+            original_filename: audio.original_filename,
+            api_key: audio.api_key,
             id: audio.id,
-            access_control: audio.access_control,
+            tags: audio.tags
           },
         });
+        console.log(savedAudio);
 
         fs.unlinkSync(path);
         res.send(savedAudio);
