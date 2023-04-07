@@ -9,6 +9,7 @@ const authMid = require('../middlewares/auth')
 const uploadMusic = require('../middlewares/uploadMusic')
 const uploadCloudinary = require('../controllers/route-upload');
 const getAudio = require('../controllers/get-audio');
+const auth = require("../middlewares/auth");
 var cors = require('cors');
 
 const Music = require('../models/Musics');
@@ -28,7 +29,7 @@ const userRoutes = app => {
     app.put("/myperfilUser/:userId", authMid, updateUser),
     app.get("/infoUser/:userId", authMid, getInfoUser),
     app.delete("/deleteUser/:userId", authMid, deleteUser)
-    app.use("/audio/upload" , uploadCloudinary);
+    app.use("/audio/upload" , auth, uploadCloudinary);
     app.use("/audio/get" , getAudio);
     app.use((req, res, next) => {
         res.header("Access-Control-Allow-Origin", "*")

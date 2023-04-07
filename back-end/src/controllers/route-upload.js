@@ -3,6 +3,10 @@ const router = express.Router();
 const fs = require("fs");
 const cloudinary = require("../utils/cloudinary");
 const upload = require("../middlewares/multer");
+const { PrismaClient } = require("@prisma/client");
+const prisma = new PrismaClient();
+const auth = require("../middlewares/auth");
+
 
 const uploadCloudinary = (req, res) => {
   upload(req, res, (err) => {
@@ -14,7 +18,7 @@ const uploadCloudinary = (req, res) => {
 
     const fName = req.file.originalname.split(".")[0];
 
-    // const userId = req.user.id;
+    const userId = req.user.id;
 
     cloudinary.uploader.upload(
       path,
@@ -22,16 +26,27 @@ const uploadCloudinary = (req, res) => {
         resource_type: "raw",
         public_id: `AudioUploads/${fName}`,
       },
-      (err, audio) => {
+      async (err, audio) => {
         if (err) return res.send(err);
-
+    
+        // Save the audio file to the database and associate it with the user
+        const savedAudio = await prisma.audio.create({
+          data: {
+            filename: fName,
+            assetId: audio.asset_id,
+            publicId: audio.public_id,
+            userId: userId,
+          },
+        });
+    
         fs.unlinkSync(path);
-        res.send(audio);
+        res.send(savedAudio);
       }
     );
   });
 }
 
+module.exports = uploadCloudinary;
 //  router.post('/upload', upload.single('music'), function (req, res) {
 //   cloudinary.uploader.upload(req.file.path, function (err, result){
 //     if(err) {
@@ -50,6 +65,6 @@ const uploadCloudinary = (req, res) => {
 //   })
 // });
 
-module.exports = uploadCloudinary;
+
 
 // O que eu estou fazendo aqui é pegar os dados do formulário e colocar no banco de dados
