@@ -44,10 +44,6 @@ export const SearchMusic = () => {
                     <br />
                     <span>{music.filename}</span>
                     <audio src={music.secure_url} controls autoPlay/>
-                    {/* <audio controls>
-                      <source src="http://localhost:3333/files/users/{music.music}" type="audio/mpeg">
-                    Your browser does not support the audio element.
-                    </audio> */}
                     <br />
                   </div>
                 ))}

@@ -18,53 +18,57 @@ const uploadCloudinary = (req, res) => {
 
     const userId = req.userId;
 
-    console.log(req.headers)
-    console.log(req.userId);
+    try {
 
-    cloudinary.uploader.upload(
-      path,
-      {
-        resource_type: "raw",
-        public_id: `AudioUploads/${fName}`,
-      },
-      async (err, audio) => {
-        if (err) return res.send(err);
-        console.log(audio);
-
-        // Save the audio file to the database and associate it with the user
-        const savedAudio = await prisma.music.create({
-          data: {
-            filename: fName,
-            asset_id: audio.asset_id,
-            public_id: audio.public_id,
-            user: {
-              connect: {
-                id: userId,
-              },
-            },
-            signature: audio.signature,
-            resource_type: audio.resource_type,
-            version: audio.version,
-            version_id: audio.version_id,
-            created_at: audio.created_at,
-            bytes: audio.bytes,
-            type: audio.type,
-            etag: audio.etag,
-            placeholder: audio.placeholder,
-            url: audio.url,
-            secure_url: audio.secure_url,
-            folder: audio.folder,
-            original_filename: audio.original_filename,
-            api_key: audio.api_key,
-            id: audio.id,
-          },
-        });
-        console.log(savedAudio);
-
-        fs.unlinkSync(path);
-        res.send(savedAudio);
+      if (!req.file) {
+        return res.status(400).json({ error: "Nenhum arquivo enviado. Por favor, selecione um arquivo para envio." });
       }
-    );
+
+      cloudinary.uploader.upload(
+        path,
+        {
+          resource_type: "raw",
+          public_id: `AudioUploads/${fName}`,
+        },
+        async (err, audio) => {
+          if (err) return res.send(err);
+
+          const savedAudio = await prisma.music.create({
+            data: {
+              filename: fName,
+              asset_id: audio.asset_id,
+              public_id: audio.public_id,
+              user: {
+                connect: {
+                  id: userId,
+                },
+              },
+              signature: audio.signature,
+              resource_type: audio.resource_type,
+              version: audio.version,
+              version_id: audio.version_id,
+              created_at: audio.created_at,
+              bytes: audio.bytes,
+              type: audio.type,
+              etag: audio.etag,
+              placeholder: audio.placeholder,
+              url: audio.url,
+              secure_url: audio.secure_url,
+              folder: audio.folder,
+              original_filename: audio.original_filename,
+              api_key: audio.api_key,
+              id: audio.id,
+            },
+          });
+          console.log("Upload realizado com sucesso!");
+          fs.unlinkSync(path);
+          res.send(savedAudio);
+        }
+      );
+    } catch (error) {
+      console.error(`Erro ao fazer upload do arquivo: ${error.message}`);
+      res.status(500).json({ message: "Erro ao fazer upload do arquivo" });
+    }
   });
 }
 

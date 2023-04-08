@@ -8,6 +8,8 @@ import { Follower } from "../pages/Follower"
 import { Following } from "../pages/Following"
 import {PerfilUser} from "../pages/PerfilUser"
 import { MyPerfil } from "../pages/MyPerfil"
+import { SearchMusic } from "../pages/SearchMusic"
+import { Upload } from "../pages/UploadMusic"
 
 export const AppRouter = () =>{
     return (
@@ -22,7 +24,9 @@ export const AppRouter = () =>{
                     <Route path="/followingsUser" element={<Following/>}/>
                     <Route path="/perfilUser/:id" element={<PerfilUser/>}/>
                     <Route path="/myperfilUser/:id" element={<MyPerfil/>}/>
-                </Route>            
+                    <Route path="/searchMusic" element={<SearchMusic/>}/>
+                    <Route path="/Upload" element={<Upload/>}/>
+                </Route>
             </Routes>
         </Router>
 

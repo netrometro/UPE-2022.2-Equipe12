@@ -24,7 +24,7 @@ const fileFilter = (req, file, cb) => {
   } else {
     cb(
       {
-        message: "Formato de arquivo não suportado",
+        message: "Formato de arquivo não suportado, tente um arquivo .mp3 ou .mpeg",
       },
       false
     );
