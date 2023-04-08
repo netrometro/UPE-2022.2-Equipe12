@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { LayoutComponent } from "../../components/LayoutComponents";
-import { PlayerMusic } from "../../components/PlayerMusic";
 import api from "../../services/api";
 
 
@@ -9,10 +8,12 @@ export const SearchMusic = () => {
 
 
   const getMusics = async () => {
-    // const headers = { //para quando o usuário estiver logado
-    //   'headers'
-    // }
-    await api.get("/audio/get")
+    const config = {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      }
+    };
+    await api.get("/audio/get", config)
     .then((response) => {
       console.log(response.data);
       setData(response.data.data);
