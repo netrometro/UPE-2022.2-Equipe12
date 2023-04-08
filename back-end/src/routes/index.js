@@ -29,7 +29,7 @@ const userRoutes = app => {
     app.put("/myperfilUser/:userId", authMid, updateUser),
     app.get("/infoUser/:userId", authMid, getInfoUser),
     app.delete("/deleteUser/:userId", authMid, deleteUser)
-    app.use("/audio/upload" , auth, uploadCloudinary);
+    app.use("/audio/upload" , authMid, uploadCloudinary);
     app.use("/audio/get" , getAudio);
     app.use((req, res, next) => {
         res.header("Access-Control-Allow-Origin", "*")
