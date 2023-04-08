@@ -54,11 +54,9 @@ const uploadCloudinary = (req, res) => {
             url: audio.url,
             secure_url: audio.secure_url,
             folder: audio.folder,
-            overwritten: audio.overwritten,
             original_filename: audio.original_filename,
             api_key: audio.api_key,
             id: audio.id,
-            tags: audio.tags
           },
         });
         console.log(savedAudio);

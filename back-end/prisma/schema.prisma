@@ -54,7 +54,6 @@ model Music {
   url             String
   secure_url      String
   folder          String
-  overwritten     Boolean
   original_filename String
   api_key         String
   user     User   @relation(fields: [userId], references: [id])
