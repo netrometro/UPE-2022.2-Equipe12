@@ -28,11 +28,9 @@ export const Home = () => {
     navigate("/SearchMusic");
   };
   function createPlaylist() {
-    signOut();
     navigate("/createPlaylist");
   }
   function getPlaylist() {
-    signOut();
     navigate("/getPlaylist");
   }
   function handleSignOut() {
