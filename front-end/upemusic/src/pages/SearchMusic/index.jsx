@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { LayoutComponent } from "../../components/LayoutComponents";
-import { PlayerMusic } from "../../components/PlayerMusic";
 import api from "../../services/api";
 
 
@@ -9,9 +8,7 @@ export const SearchMusic = () => {
 
 
   const getMusics = async () => {
-    // const headers = { //para quando o usuário estiver logado
-    //   'headers'
-    // }
+    api.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('@Auth:token')}`;
     await api.get("/audio/get")
     .then((response) => {
       console.log(response.data);
@@ -37,13 +34,12 @@ export const SearchMusic = () => {
                   <br />
                   <br />
               </div>
-              <div className="container-login-form-btn">
+              <div className="containerAllMusics">
                 {data.map(music => (
-                  <div key={music.asset_id}>
-                    <span>{music.public_id}</span>
+                  <div className="box" key={music.asset_id}>
+                    <span className="titleMusic">{music.public_id}</span>
                     <br />
-                    <span>{music.filename}</span>
-                    <audio src={music.secure_url} controls autoPlay/>
+                    <audio className="audio" src={music.secure_url} controls/>
                     <br />
                   </div>
                 ))}

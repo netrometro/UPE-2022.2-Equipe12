@@ -15,34 +15,19 @@ export const Upload = () => {
         console.log("upload");
 
         const formData = new FormData();
-        formData.append('music', music);
+        formData.append('audio', music);
 
-        const headers = {
-            'headers':{
-              'Content-Type': 'application/json',
-              'Content-Type': 'multipart/form-data; boundary=<calculated when request is sent>'
-            }
+        // const headers = {
+        //   'Content-Type': 'multipart/form-data'
+        //   }
+        api.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('@Auth:token')}`;
+
+          try {
+            await api.post("/audio/upload", formData);
+            alert("Upload realizado com sucesso!")
+          } catch (error) {
+            alert("Erro ao realizar o upload!")
           }
-
-          await api.post("/upload-music", formData, headers)
-          .then((response) => {
-            setStatus({
-              type: 'success',
-              mensagem: response.data.mensagem
-            });
-          }).catch((err) => {
-            if(err.response){
-              setStatus({
-                type: 'error',
-                mensagem: err.response.data.mensagem
-              });
-            }else{
-              setStatus({
-                type: 'error',
-                mensagem: "Erro: Tente mais tarde!"
-              });
-            }
-          });
     }
 
     return (
@@ -56,14 +41,15 @@ export const Upload = () => {
                     <br />
                 </div>
                 <div className="container-login-form-btn">
-                        {status.type === 'success'? <p style={{color: "green"}}>{status.mensagem}</p> : ""}
-                        {status.type === 'error'? <p style={{color: "red"}}>{status.mensagem}</p> : ""}
                     <form onSubmit={uploadMusic}>
                         <label>Musica: </label>
                         <input type="file" name="music" onChange={e => setMusic(e.target.files[0])} />
                         <br />
                         <br />
                         <button type="submit" style={{ marginBottom: "10px" }} className="login-form-btn">Salvar</button>
+                        <br />
+                        {status.type === 'success' && <span style={{color: "green"}}>{status.mensagem}</span>}
+                        {status.type === 'error' && <span style={{color: "red"}}>{status.mensagem}</span>}
                     </form>
                 </div>
             </div>
