@@ -60,10 +60,10 @@ const uploadCloudinary = (req, res) => {
               id: audio.id,
             },
           });
-          console.log("Upload realizado com sucesso!");
           fs.unlinkSync(path);
           res.send(savedAudio);
-        }
+        },
+        res.status(200).json({ message: "Upload realizado com sucesso!" }),
       );
     } catch (error) {
       console.error(`Erro ao fazer upload do arquivo: ${error.message}`);

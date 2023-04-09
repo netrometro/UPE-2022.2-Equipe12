@@ -8,12 +8,8 @@ export const SearchMusic = () => {
 
 
   const getMusics = async () => {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`
-      }
-    };
-    await api.get("/audio/get", config)
+    api.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('@Auth:token')}`;
+    await api.get("/audio/get")
     .then((response) => {
       console.log(response.data);
       setData(response.data.data);
@@ -38,13 +34,12 @@ export const SearchMusic = () => {
                   <br />
                   <br />
               </div>
-              <div className="container-login-form-btn">
+              <div className="containerAllMusics">
                 {data.map(music => (
-                  <div key={music.asset_id}>
-                    <span>{music.public_id}</span>
+                  <div className="box" key={music.asset_id}>
+                    <span className="titleMusic">{music.public_id}</span>
                     <br />
-                    <span>{music.filename}</span>
-                    <audio src={music.secure_url} controls autoPlay/>
+                    <audio className="audio" src={music.secure_url} controls/>
                     <br />
                   </div>
                 ))}

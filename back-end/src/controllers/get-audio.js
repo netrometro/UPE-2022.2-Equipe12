@@ -13,8 +13,6 @@ const getAudio = async (req, res, next) => {
     const userMusics = await prisma.music.findMany({ where: { userId } });
     const userMusicIds = userMusics.map((music) => music.asset_id);
 
-    //const expression = `folder=AudioUploads/${userId}`;
-
     // Parâmetros de busca
     const options = await cloudinary.api.resources({
       resource_type: "raw",
@@ -26,26 +24,10 @@ const getAudio = async (req, res, next) => {
     });
     console.log(options)
 
-    const userAudios = options.resources.filter((audio) =>
-    userMusicIds.includes(audio.asset_id)
-  );
-
     // Executa a busca
-    // const result = await cloudinary.search
-    //   .expression()
-    //   .sort_by("filename", "desc")
-    //   .execute(options);
-      //auth_token = req.headers.authorization;
-      // .max_results(10)
-
-      // console.log(result.resources);
-
-      // if (result.resources.length === 0) {
-      //   return res.status(404).json({
-      //     success: false,
-      //     message: "Nenhuma música associada a você, por favor, faça um upload antes",
-      //   });
-      // }
+    const userAudios = options.resources.filter((audio) =>
+    userMusicIds.includes(String(audio.asset_id))
+  );
 
     // Retorna os resultados
     res.status(200).json({ success: true, data: userAudios, message: "Busca por arquivos de áudio realizada com sucesso"  });
