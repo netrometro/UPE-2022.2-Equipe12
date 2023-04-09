@@ -44,7 +44,7 @@ export const getPlaylist = async (req, res) => {
                 userId: userId
             },
             include: {
-                playlistMusics : true
+                playlistMusics: true
             }
         });
 
@@ -62,3 +62,50 @@ export const getPlaylist = async (req, res) => {
     }
 
 }
+
+import { prisma } from "../../lib/prisma";
+
+export const deletePlaylist = async (req, res) => {
+    const { name } = req.body;
+    const userId = req.userId;
+
+    try {
+        // Busca a playlist do usuário logado com o nome especificado
+        const playlist = await prisma.playlist.findUnique({
+            where: {
+                name: name,
+              },
+            include: {
+                playlistMusics: true
+            }
+        });
+
+        if (!playlist) {
+            return res
+                .status(404)
+                .json({ success: false, message: "Playlist não encontrada" });
+        }
+
+        // Exclui as músicas relacionadas com a playlist
+        await prisma.playlistMusic.deleteMany({
+            where: {
+                playlistId: playlist.id,
+            },
+        });
+
+        // Exclui a playlist com base no ID
+        await prisma.playlist.deleteMany({
+            where: {
+                id: playlist.id,
+            },
+        });
+
+        res.status(200).json({
+            success: true,
+            message: `Playlist "${name}" excluída com sucesso`,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ success: false, message: "Erro ao excluir playlist" });
+    }
+};
