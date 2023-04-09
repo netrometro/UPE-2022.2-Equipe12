@@ -33,5 +33,32 @@ export const createPlaylist = async (req, res) => {
         console.log(error);
         res.status(500).json({ success: false, message: "Erro ao criar playlist" });
     }
+}
+
+export const getPlaylist = async (req, res) => {
+    const userId = req.userId;
+    try {
+        // Busca a playlist do usuário logado e inclui suas músicas
+        const playlist = await prisma.playlist.findMany({
+            where: {
+                userId: userId
+            },
+            include: {
+                playlistMusics : true
+            }
+        });
+
+        if (!playlist) {
+            return res.status(404).json({
+                success: false,
+                message: "Playlist não encontrada"
+            });
+        }
+
+        res.status(200).json({ success: true, data: playlist, message: "Playlist encontrada com sucesso" });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ success: false, message: "Erro ao buscar playlist" });
+    }
 
 }
