@@ -3,7 +3,7 @@ import { authenticate } from "../controllers/auth-controller";
 import { followUser, followsUser } from "../controllers/follows/follower-controller"
 import { unfollowUser } from "../controllers/follows/unfollower-controller"
 import { followingsUser } from "../controllers/follows/following-controller"
-import { createPlaylist, deletePlaylist, getPlaylist } from "../controllers/playlist/playlist-controller";
+import { addMusicsToPlaylist, createPlaylist, deletePlaylist, getPlaylist, removeMusicsFromPlaylist, updatePlaylist } from "../controllers/playlist/playlist-controller";
 const authMid = require('../middlewares/auth')
 const uploadCloudinary = require('../controllers/route-upload');
 const getAudio = require('../controllers/get-audio');
@@ -23,8 +23,7 @@ const userRoutes = app => {
         app.delete("/deleteUser/:userId", authMid, deleteUser)
     app.post("/createPlaylist", authMid, createPlaylist),
         app.get("/getPlaylist", authMid, getPlaylist),
-        app.delete("/deletePlaylist", authMid,deletePlaylist)
-
+        app.delete("/deletePlaylist", authMid,deletePlaylist),
 
         app.use("/audio/upload", authMid, uploadCloudinary),
         app.use("/audio/get", authMid, getAudio)
