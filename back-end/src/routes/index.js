@@ -21,11 +21,9 @@ const userRoutes = app => {
         app.put("/myperfilUser/:userId", authMid, updateUser),
         app.get("/infoUser/:userId", authMid, getInfoUser),
         app.delete("/deleteUser/:userId", authMid, deleteUser)
-    app.post("/createPlaylist", authMid, createPlaylist),
+        app.post("/createPlaylist", authMid, createPlaylist),
         app.get("/getPlaylist", authMid, getPlaylist),
         app.delete("/deletePlaylist", authMid,deletePlaylist)
-
-
         app.use("/audio/upload", authMid, uploadCloudinary),
         app.use("/audio/get", authMid, getAudio)
 
