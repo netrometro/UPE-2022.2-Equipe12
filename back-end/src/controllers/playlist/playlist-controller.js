@@ -74,7 +74,7 @@ export const deletePlaylist = async (req, res) => {
         const playlist = await prisma.playlist.findUnique({
             where: {
                 name: name,
-              },
+            },
             include: {
                 playlistMusics: true
             }
