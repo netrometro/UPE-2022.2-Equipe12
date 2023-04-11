@@ -10,6 +10,8 @@ import {PerfilUser} from "../pages/PerfilUser"
 import { MyPerfil } from "../pages/MyPerfil"
 import { SearchMusic } from "../pages/SearchMusic"
 import { Upload } from "../pages/UploadMusic"
+import { SearchPlaylist } from "../pages/YourPlaylists"
+import { CreatePlaylist } from "../pages/CreatePlaylist"
 
 export const AppRouter = () =>{
     return (
@@ -26,6 +28,8 @@ export const AppRouter = () =>{
                     <Route path="/myperfilUser/:id" element={<MyPerfil/>}/>
                     <Route path="/searchMusic" element={<SearchMusic/>}/>
                     <Route path="/Upload" element={<Upload/>}/>
+                    <Route path="/getPlaylist" element={<SearchPlaylist/>}/>
+                    <Route path="/createPlaylist" element={<CreatePlaylist/>}/>
                 </Route>
             </Routes>
         </Router>
