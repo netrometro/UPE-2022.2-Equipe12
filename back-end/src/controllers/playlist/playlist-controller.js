@@ -1,4 +1,4 @@
-import { prisma } from "../../lib/prisma"
+import { prisma } from "../../lib/prisma";
 
 export const createPlaylist = async (req, res) => {
     const { name, musicIds } = req.body;
@@ -28,7 +28,7 @@ export const createPlaylist = async (req, res) => {
             });
         }
 
-        res.status(201).json({ success: true, message: "Playlist criada com sucesso" });
+        res.status(200).json({ success: true, message: "Playlist criada com sucesso" });
     } catch (error) {
         console.log(error);
         res.status(500).json({ success: false, message: "Erro ao criar playlist" });

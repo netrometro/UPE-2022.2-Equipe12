@@ -12,14 +12,8 @@ export const Upload = () => {
 
     const uploadMusic= async e => {
         e.preventDefault();
-        console.log("upload");
-
         const formData = new FormData();
         formData.append('audio', music);
-
-        // const headers = {
-        //   'Content-Type': 'multipart/form-data'
-        //   }
         api.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('@Auth:token')}`;
 
           try {
