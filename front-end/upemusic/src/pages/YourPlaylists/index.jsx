@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { LayoutComponent } from "../../components/LayoutComponents";
 import api from "../../services/api";
+import { useNavigate } from "react-router-dom";
 
 
 export const SearchPlaylist = () => {
     const [data, setData] = useState([]);
-
+    const navigate = useNavigate();
 
     const getPlaylist = async () => {
         api.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('@Auth:token')}`;
@@ -38,9 +39,6 @@ export const SearchPlaylist = () => {
                     {data.map(music => (
                         <div className="box" key={music.playlistMusics}>
                             <span className="titleMusic">{music.name}</span>
-                            <br />
-                            <audio className="audio" src={music.secure_url} controls />
-                            <br />
                         </div>
                     ))}
                 </div>

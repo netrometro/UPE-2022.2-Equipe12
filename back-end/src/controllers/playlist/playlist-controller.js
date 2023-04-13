@@ -3,24 +3,16 @@ import { prisma } from "../../lib/prisma";
 export const createPlaylist = async (req, res) => {
     const { name, musicIds } = req.body;
     const userId = req.userId;
-    console.log(musicIds)
-    console.log(name)
     try {
         console.log(musicIds)
 
         const musics = await prisma.music.findMany({ where: { userId } });
-        console.log("musicas")
-        console.log(musics);
           if (musics.length !== musicIds.length) {
-            console.log("Algumas músicas não existem")
-            // Alguma música não foi encontrada
             res.status(400).json({ success: false, message: "Alguma das músicas selecionadas não existe" });
             return;
         }
 
         const userMusicIds = musics.map((music) => music.asset_id);
-        console.log("Ids das musicas")
-        console.log(userMusicIds)
 
         //   const existingPlaylist = await prisma.playlist.findUnique({
         //     where: { name },
@@ -47,9 +39,6 @@ export const createPlaylist = async (req, res) => {
                 user: {
                     connect: { id: userId },
                 },
-                // tracks: {
-                //     connect: userMusicIds.map((music) => ({ id: music.id })),
-                // },
             },
         });
 
@@ -102,7 +91,35 @@ export const getPlaylist = async (req, res) => {
 
 }
 
-import { prisma } from "../../lib/prisma";
+export const getPlaylistAudio = async (req, res) => {
+    const id = req.id;
+    const playlistId = req.playlist.playlistId;
+    try {
+        // Busca a playlist do usuário logado e inclui suas músicas
+        const musics = await prisma.music.findMany({ where: { userId } });
+        const playlist = await prisma.playlistMusic.findMany({
+            where: {
+                id: id
+            },
+            include: {
+                playlistId: playlistId
+            }
+        });
+
+        if (!playlist) {
+            return res.status(404).json({
+                success: false,
+                message: "Playlist não encontrada"
+            });
+        }
+
+        res.status(200).json({ success: true, data: playlist, message: "Playlist encontrada com sucesso" });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ success: false, message: "Erro ao buscar playlist" });
+    }
+
+}
 
 export const deletePlaylist = async (req, res) => {
     const { name } = req.body;
