@@ -3,7 +3,43 @@ import { prisma } from "../../lib/prisma";
 export const createPlaylist = async (req, res) => {
     const { name, musicIds } = req.body;
     const userId = req.userId;
+    console.log(musicIds)
+    console.log(name)
     try {
+        console.log(musicIds)
+
+        const musics = await prisma.music.findMany({ where: { userId } });
+        console.log("musicas")
+        console.log(musics);
+          if (musics.length !== musicIds.length) {
+            console.log("Algumas músicas não existem")
+            // Alguma música não foi encontrada
+            res.status(400).json({ success: false, message: "Alguma das músicas selecionadas não existe" });
+            return;
+        }
+
+        const userMusicIds = musics.map((music) => music.asset_id);
+        console.log("Ids das musicas")
+        console.log(userMusicIds)
+
+        //   const existingPlaylist = await prisma.playlist.findUnique({
+        //     where: { name },
+        //   });
+          
+        //   if (existingPlaylist) {
+        //     throw new Error('Já existe uma playlist com esse nome');
+        //   }
+          
+        //   const playlistFind = await prisma.playlist.create({
+        //     data: {
+        //       name,
+        //       tracks: {
+        //         connect: tracks.map((trackId) => ({ id: trackId })),
+        //       },
+        //     },
+        //   });
+          
+
         // Cria a nova playlist
         const playlist = await prisma.playlist.create({
             data: {
@@ -11,18 +47,21 @@ export const createPlaylist = async (req, res) => {
                 user: {
                     connect: { id: userId },
                 },
+                // tracks: {
+                //     connect: userMusicIds.map((music) => ({ id: music.id })),
+                // },
             },
         });
 
         // Adiciona as músicas selecionadas à playlist
-        for (const musicId of musicIds) {
+        for (const musicId of musics) {
             await prisma.playlistMusic.create({
                 data: {
                     playlist: {
                         connect: { id: playlist.id },
                     },
                     music: {
-                        connect: { id: musicId },
+                        connect: { id: musicId.id },
                     },
                 },
             });
