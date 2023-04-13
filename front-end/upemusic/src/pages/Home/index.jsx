@@ -1,4 +1,5 @@
 import { LayoutComponent } from "../../components/LayoutComponents";
+import { HiOutlineMusicNote, HiOutlineSearch } from "react-icons/hi";
 import { useContext } from "react";
 import { AuthContext } from "../../context/auth";
 import { useNavigate } from "react-router-dom";
@@ -20,10 +21,23 @@ export const Home = () => {
   function following() {
     navigate("/followingsUser");
   };
+  function UpMusic() {
+    navigate("/Upload");
+  };
+  function SearchMusic() {
+    navigate("/SearchMusic");
+  };
+  function createPlaylist() {
+    navigate("/createPlaylist");
+  }
+  function getPlaylist() {
+    navigate("/getPlaylist");
+  }
   function handleSignOut() {
     signOut();
     navigate("/");
   }
+  
   return (
     <><LayoutComponent>
       <div className="home-container">
@@ -35,10 +49,26 @@ export const Home = () => {
           <br />
         </div>
         <div className="container-login-form-btn">
-          <button onClick={handleSignOut} style={{ marginBottom: "10px" }} type="submit" className="login-form-btn">Deslogar</button>
+          <button type="button" style={{ marginBottom: "10px" }} onClick={UpMusic} className="login-form-btn">
+            <HiOutlineMusicNote size="30px" style={{marginRight:"2%"}} />
+            Upar suas músicas
+          </button>
+          <button type="button" style={{ marginBottom: "10px" }} onClick={SearchMusic} className="login-form-btn">
+          <HiOutlineSearch size="30px" style={{marginRight:"2%"}} />
+            Pesquisar suas músicas
+          </button>
+          <button type="button" style={{ marginBottom: "10px" }} onClick={createPlaylist} className="login-form-btn">
+            <HiOutlineMusicNote size="30px" style={{marginRight:"2%"}} />
+            Criar playlist
+          </button>
+          <button type="button" style={{ marginBottom: "10px" }} onClick={getPlaylist} className="login-form-btn">
+            <HiOutlineMusicNote size="30px" style={{marginRight:"2%"}} />
+            Suas playlists
+          </button>
           <button type="button" style={{ marginBottom: "10px" }} onClick={search} className="login-form-btn">Procurar usuário</button>
           <button type="button" style={{ marginBottom: "10px" }} onClick={follower} className="login-form-btn">Seguidores</button>
           <button type="button" style={{ marginBottom: "10px" }} onClick={following} className="login-form-btn">Seguindo</button>
+          <button onClick={handleSignOut} style={{ marginBottom: "10px" }} type="submit" className="login-form-btn">Deslogar</button>
           <button
             type="button"
             style={{ marginBottom: "10px" }}

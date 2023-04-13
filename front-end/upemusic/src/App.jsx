@@ -5,6 +5,7 @@ import "./styles.css";
 export const App = () => {
   
   return (
+
     <AuthProvider>
         <AppRouter/>
     </AuthProvider>
